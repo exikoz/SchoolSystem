@@ -8,7 +8,7 @@ namespace SchoolSystemDB.Models
 {
     public class Classroom
     {
-        public int ClassRoomId {get; set;}
+        public int ClassroomId {get; set;}
         public int Capacity { get; set; }
     }
 }

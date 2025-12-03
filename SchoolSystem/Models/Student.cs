@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace SchoolSystemDB.Models
 {
-    public class Enrolls
+    public class Student
     {
-        public int EnrollmentId { get; set; }
-        public int FkCourseId { get; set; }
-        public int FkStudentId { get; set; }
+        public int StudentId { get; set; }
+        public string FullName { get; set; }
 
     }
 }
