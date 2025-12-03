@@ -1,17 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolSystemDB.Models
 {
     public class ClassroomTeacher
     {
-        public int ClassroomTeacherId { get; set; }/* <- Added ClassRoomTeacherId to avoid composite keys and make this entity easier to use in EF Core.
-                                                      The table contains its own data (Schedule), so it behaves like a full entity rather than a pure join table.*/
+        [Key]
+        public int ClassroomTeacherId { get; set; }
         public int FkTeacherId { get; set; }
+        [ForeignKey(nameof(FkTeacherId))]
+        public virtual Teacher Teacher { get; set; }
         public int FkClassroomId { get; set; }
+        [ForeignKey(nameof(FkClassroomId))]
+        public virtual Classroom Classroom { get; set; }
 
-    }
+}
 }

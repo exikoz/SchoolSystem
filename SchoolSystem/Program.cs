@@ -8,7 +8,7 @@ namespace SchoolSystem
     {
         static void Main(string[] args)
         {
-
+            
         }
     }
 }
