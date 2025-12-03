@@ -10,7 +10,7 @@ using SchoolSystem.data;
 
 namespace SchoolSystem.Migrations
 {
-    [DbContext(typeof(SchoolContext))]
+    [DbContext(typeof(SchoolSystemContext))]
     partial class SchoolContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)
@@ -37,6 +37,10 @@ namespace SchoolSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("AssignedId");
+
+                    b.HasIndex("FkClassroomId");
+
+                    b.HasIndex("FkStudentId");
 
                     b.ToTable("Assgineds");
                 });
@@ -72,6 +76,10 @@ namespace SchoolSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("ClassroomTeacherId");
+
+                    b.HasIndex("FkClassroomId");
+
+                    b.HasIndex("FkTeacherId");
 
                     b.ToTable("ClassroomTeachers");
                 });
@@ -114,6 +122,10 @@ namespace SchoolSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("EnrollsId");
+
+                    b.HasIndex("FkCourseId");
+
+                    b.HasIndex("FkStudentId");
 
                     b.ToTable("Enrolls");
                 });
@@ -166,7 +178,8 @@ namespace SchoolSystem.Migrations
 
                     b.Property<string>("FullName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
 
                     b.HasKey("StudentId");
 
@@ -188,6 +201,10 @@ namespace SchoolSystem.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("StudentReportId");
+
+                    b.HasIndex("FkReportId");
+
+                    b.HasIndex("FkStudentId");
 
                     b.ToTable("StudentReports");
                 });
@@ -234,12 +251,132 @@ namespace SchoolSystem.Migrations
                     b.Property<DateTime>("GradingDate")
                         .HasColumnType("datetime2");
 
-                    b.Property<int>("TeacherReportId")
-                        .HasColumnType("int");
-
                     b.HasKey("TeacherSignatureId");
 
+                    b.HasIndex("FkReportId");
+
+                    b.HasIndex("FkTeacherId");
+
                     b.ToTable("TeacherSignatures");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Assigned", b =>
+                {
+                    b.HasOne("SchoolSystemDB.Models.Classroom", "Classroom")
+                        .WithMany("Assigneds")
+                        .HasForeignKey("FkClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemDB.Models.Student", "Student")
+                        .WithMany("Assigneds")
+                        .HasForeignKey("FkStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.ClassroomTeacher", b =>
+                {
+                    b.HasOne("SchoolSystemDB.Models.Classroom", "Classroom")
+                        .WithMany("ClassroomTeachers")
+                        .HasForeignKey("FkClassroomId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemDB.Models.Teacher", "Teacher")
+                        .WithMany("ClassroomTeachers")
+                        .HasForeignKey("FkTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Classroom");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Enrolls", b =>
+                {
+                    b.HasOne("SchoolSystemDB.Models.Course", "Course")
+                        .WithMany("Enrolls")
+                        .HasForeignKey("FkCourseId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemDB.Models.Student", "Student")
+                        .WithMany("Enrolls")
+                        .HasForeignKey("FkStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Course");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.StudentReport", b =>
+                {
+                    b.HasOne("SchoolSystemDB.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("FkReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemDB.Models.Student", "Student")
+                        .WithMany()
+                        .HasForeignKey("FkStudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+
+                    b.Navigation("Student");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.TeacherSignature", b =>
+                {
+                    b.HasOne("SchoolSystemDB.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("FkReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("SchoolSystemDB.Models.Teacher", "Teacher")
+                        .WithMany()
+                        .HasForeignKey("FkTeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Classroom", b =>
+                {
+                    b.Navigation("Assigneds");
+
+                    b.Navigation("ClassroomTeachers");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Course", b =>
+                {
+                    b.Navigation("Enrolls");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Student", b =>
+                {
+                    b.Navigation("Assigneds");
+
+                    b.Navigation("Enrolls");
+                });
+
+            modelBuilder.Entity("SchoolSystemDB.Models.Teacher", b =>
+                {
+                    b.Navigation("ClassroomTeachers");
                 });
 #pragma warning restore 612, 618
         }

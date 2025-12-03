@@ -1,18 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace SchoolSystemDB.Models
 {
     public class TeacherSignature
     {
+        [Key]
         public int TeacherSignatureId { get; set; }
-        public int TeacherReportId { get; set; }
         public int FkReportId { get; set; }
+        [ForeignKey(nameof(FkReportId))]
+        public virtual Report Report { get; set; }
         public int FkTeacherId { get; set; }
-        public string Grade { get; set; }
+        [ForeignKey(nameof(FkTeacherId))]
+        public virtual Teacher Teacher { get; set; }
+        public string Grade { get; set; } = string.Empty;
         public DateTime GradingDate { get; set; }
 
 

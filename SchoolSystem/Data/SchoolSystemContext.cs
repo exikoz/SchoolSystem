@@ -9,10 +9,10 @@ using System.IO;
 
 namespace SchoolSystem.data
 {
-    public class SchoolContext : DbContext
+    public class SchoolSystemContext : DbContext
     {
-        public SchoolContext() { }
-        public SchoolContext(DbContextOptions<SchoolContext> options) : base(options) { }
+        public SchoolSystemContext() { }
+        public SchoolSystemContext(DbContextOptions<SchoolSystemContext> options) : base(options) { }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
