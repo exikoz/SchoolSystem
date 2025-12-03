@@ -8,7 +8,7 @@ namespace SchoolSystemDB.Models
 {
     public class Enrolls
     {
-        public int EnrollmentId { get; set; }
+        public int EnrollsId { get; set; }
         public int FkCourseId { get; set; }
         public int FkStudentId { get; set; }
 
