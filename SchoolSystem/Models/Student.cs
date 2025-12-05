@@ -1,19 +1,35 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-namespace SchoolSystemDB.Models
+namespace SchoolSystem.Models
 {
+    [Index(nameof(Email), IsUnique = true)]
+    [Index(nameof(PersonalNumber), IsUnique = true)]
     public class Student
     {
         [Key]
         public int StudentId { get; set; }
 
         [Required]
+        [MaxLength(50)]
+        public string FirstName { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(50)]
+        public string LastName { get; set; } = string.Empty;
+
+        [Required]
+        [MaxLength(13)] // ex. 19900101-1234
+        public string PersonalNumber { get; set; } = string.Empty;
+
+        [Required]
         [MaxLength(100)]
-        public string FullName { get; set; } = string.Empty; // avoid null warnings
+        [EmailAddress]
+        public string Email { get; set; } = string.Empty;
 
-        //(One-to-Many relationships) navigation properties
-        public virtual ICollection<Assigned> Assigneds { get; set; } = new List<Assigned>();
-        public virtual ICollection<Enrolls> Enrolls { get; set; } = new List<Enrolls>();
+        public DateTime CreatedAt { get; set; } = DateTime.Now;
 
+        // hämta studentens kurser
+        public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
     }
 }

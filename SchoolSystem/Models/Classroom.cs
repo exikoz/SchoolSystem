@@ -1,15 +1,21 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
-namespace SchoolSystemDB.Models
+namespace SchoolSystem.Models
 {
+    [Index(nameof(Name), IsUnique = true)]
     public class Classroom
     {
         [Key]
-        public int ClassroomId {get; set;}
+        public int ClassroomId { get; set; }
+
+        [Required]
+        [MaxLength(50)]
+        public string Name { get; set; } = string.Empty;
+
         public int Capacity { get; set; }
 
-        public virtual ICollection<Assigned> Assigneds { get; set; } = new List<Assigned>();
-        public virtual ICollection<ClassroomTeacher> ClassroomTeachers { get; set; } = new List<ClassroomTeacher>();
+        // Navigation Properties
+        public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
     }
 }

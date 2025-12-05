@@ -1,18 +1,21 @@
 ﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
-namespace SchoolSystemDB.Models
+namespace SchoolSystem.Models
 {
     public class Course
     {
-        //public string Name { get; set; }
-        //public bool Active { get; set; }
         [Key]
         public int CourseId { get; set; }
-        public string Schedule { get; set; } = string.Empty;
-        public  DateTime CourseStartDate { get; set; }
-        public DateTime CourseEndDate { get; set; }
 
-        public virtual ICollection<Enrolls> Enrolls { get; set; } = new List<Enrolls>();
+        [Required]
+        [MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
+
+        public DateTime StartDate { get; set; }
+        public DateTime EndDate { get; set; }
+
+        // Navigation Properties
+        public virtual ICollection<Enrollment> Enrollments { get; set; } = new List<Enrollment>();
+        public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
     }
 }
