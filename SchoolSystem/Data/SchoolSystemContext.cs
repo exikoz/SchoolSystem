@@ -1,13 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.IO;
+using SchoolSystem.Models;
 
-namespace SchoolSystem.data
+namespace SchoolSystem.Data
 {
     public class SchoolSystemContext : DbContext
     {
@@ -28,18 +23,13 @@ namespace SchoolSystem.data
             }
         }
 
+        public DbSet<Student> Students { get; set; }
+        public DbSet<Teacher> Teachers { get; set; }
+        public DbSet<Course> Courses { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
+        public DbSet<Enrollment> Enrollments { get; set; }
+        public DbSet<Grade> Grades { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
 
-        public DbSet<SchoolSystemDB.Models.Assigned> Assgineds { get; set; }
-        public DbSet<SchoolSystemDB.Models.Classroom> Classrooms { get; set; }
-        public DbSet<SchoolSystemDB.Models.ClassroomTeacher> ClassroomTeachers { get; set; }
-        public DbSet<SchoolSystemDB.Models.Course> Courses { get; set; }
-        public DbSet<SchoolSystemDB.Models.Enrolls> Enrolls { get; set; }
-        public DbSet<SchoolSystemDB.Models.Report> Reports { get; set; }
-        public DbSet<SchoolSystemDB.Models.ScheduleClassroom> ScheduleClassrooms { get; set; }
-        public DbSet<SchoolSystemDB.Models.Student> Students { get; set; }
-        public DbSet<SchoolSystemDB.Models.StudentReport> StudentReports { get; set; }
-        public DbSet<SchoolSystemDB.Models.Teacher> Teachers { get; set; }
-        public DbSet<SchoolSystemDB.Models.TeacherSignature> TeacherSignatures { get; set; }
-        
     }
 }
