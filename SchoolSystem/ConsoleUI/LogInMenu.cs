@@ -23,7 +23,7 @@ namespace SchoolSystem.ConsoleUI
                 {
                     // Admin logs in
                     case 1:
-                        MainMenu.UseMainMenu();
+                        //MainMenu.UseMainMenu();
                         break;
 
                     // Admin exits school system

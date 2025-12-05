@@ -1,18 +1,14 @@
-﻿using SchoolSystem.data;
-using SchoolSystemDB.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolSystem.Data;
+using SchoolSystem.Models;
+
 
 namespace SchoolSystem.Service
 {
     public class CourseService
     {
-        public readonly SchoolContext _context;
+        public readonly SchoolSystemContext _context;
 
-        public CourseService(SchoolContext context)
+        public CourseService(SchoolSystemContext context)
         {
             _context = context;
         }
@@ -39,9 +35,9 @@ namespace SchoolSystem.Service
             if (course == null)
                 return null;
 
-            course.Schedule = updatedCourse.Schedule;
-            course.CourseStartDate = updatedCourse.CourseStartDate;
-            course.CourseEndDate = updatedCourse.CourseEndDate;
+            course.Name= updatedCourse.Name;
+            course.StartDate = updatedCourse.StartDate;
+            course.EndDate = updatedCourse.EndDate;
             _context.SaveChanges();
             return course;
         }
