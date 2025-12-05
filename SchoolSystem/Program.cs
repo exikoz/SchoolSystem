@@ -1,4 +1,4 @@
-﻿using SchoolSystem.Data;
+using SchoolSystem.Data;
 using SchoolSystem.Models;
 using Microsoft.EntityFrameworkCore;
 
