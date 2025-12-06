@@ -1,4 +1,5 @@
-﻿using SchoolSystem.Models;
+﻿using SchoolSystem.ConsoleUI;
+using SchoolSystem.Models;
 using SchoolSystem.Service;
 using System;
 using System.Collections.Generic;
@@ -104,61 +105,30 @@ namespace SchoolSystem
 
                                     if (entity == EntityType.Student)
                                     {
-                                        Console.Write("Enter first name: ");
-                                        var inputName = Console.ReadLine();
-                                        Console.Write("Enter last name: ");
-                                        var inputLastName = Console.ReadLine();
-                                        Console.Write("Enter person number: ");
-                                        var inputPersonNumber = Console.ReadLine();
-                                        Console.Write("Enter valid email: ");
-                                        var inputEmail = Console.ReadLine();
-
-                                        var student = new Student { FirstName = inputName, LastName = inputLastName, PersonalNumber = inputPersonNumber, Email = inputEmail };
+                                        var student = MenuHelper.CreateStudent();
                                         StudentService.CreateStudent(student);
                                         Console.WriteLine($"Created student with ID: {student.StudentId}");
-                                        Console.ReadKey();
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
-                                        Console.Write("Enter name for classroom: ");
-                                        var inputClassRoomName = Console.ReadLine();
-                                        Console.Write("Enter capacity: ");
-                                        var inputCapacity = Console.ReadLine();
-
-                                        var classroom = new Classroom { Name = inputClassRoomName, Capacity = int.Parse(inputCapacity) };
+                                        var classroom = MenuHelper.CreateClassroom();
                                         ClassroomService.CreateClasroom(classroom);
                                         Console.WriteLine($"Created classroom with ID: {classroom.ClassroomId}");
-                                        Console.ReadKey();
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
-                                        Console.Write("Enter first name: ");
-                                        var inputName = Console.ReadLine();
-                                        Console.Write("Enter last name: ");
-                                        var inputLastName = Console.ReadLine();
-                                        Console.Write("Enter valid email: ");
-                                        var inputEmail = Console.ReadLine();
-
-                                        var teacher = new Teacher { FirstName = inputName, LastName = inputLastName, Email = inputEmail };
+                                        var teacher = MenuHelper.CreateTeacher();
                                         TeacherService.CreateTeacher(teacher);
                                         Console.WriteLine($"Created teacher with ID: {teacher.TeacherId}");
-                                        Console.ReadKey();
-
                                     }
                                     else if (entity == EntityType.Course)
                                     {
-                                        Console.Write("Enter name of the course: ");
-                                        var courseName = Console.ReadLine();
-                                        Console.Write("Enter start date: ");
-                                        var startDate = DateTime.Parse(Console.ReadLine());
-                                        Console.Write("Enter end date: ");
-                                        var endDate = DateTime.Parse(Console.ReadLine());
-
-                                        var course = new Course { Name = courseName, StartDate = startDate, EndDate = endDate };
+                                        var course = MenuHelper.CreateCourse();
                                         CourseService.CreateCourse(course);
                                         Console.WriteLine($"Created course with ID: {course.CourseId}");
-                                        Console.ReadKey();
+                                        
                                     }
+                                    Console.ReadKey();
                                     break;
 
                                 case CrudAction.Read:
@@ -166,61 +136,74 @@ namespace SchoolSystem
                                     if (entity == EntityType.Student)
                                     {
                                         var students = StudentService.GetAllStudents();
-                                        foreach (var student in students)
-                                        {
-                                            Console.WriteLine($"Id: {student.StudentId} \nName: {student.FirstName} {student.LastName} \nEmail: {student.Email}\nPerson number: {student.PersonalNumber}");
-                                            Console.WriteLine();
-                                        }
-                                        Console.ReadKey();
-
+                                        MenuHelper.PrintStudents(students);
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
                                         var classrooms = ClassroomService.GetAllClassrooms();
-
-                                        foreach (var classroom in classrooms)
-                                        {
-                                            Console.WriteLine($"Id: {classroom.ClassroomId} \nName: {classroom.Name}\nCapacity: {classroom.Capacity}");
-                                            Console.WriteLine();
-
-
-                                        }
-                                        Console.ReadKey();
+                                        MenuHelper.PrintClassrooms(classrooms);
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
                                         var teachers = TeacherService.GetAllTeachers();
-                                        foreach (var teacher in teachers)
-                                        {
-                                            Console.WriteLine($"Id: {teacher.TeacherId} \nName: {teacher.FirstName} {teacher.LastName} \nEmail: {teacher.Email}");
-                                            Console.WriteLine();
-                                        }
-                                        Console.ReadKey();
+                                        MenuHelper.PrintTeachers(teachers);
                                     }
                                     else if (entity == EntityType.Course)
                                     {
                                         var courses = CourseService.GetAllCourses();
-                                        foreach (var course in courses)
-                                        {
-                                            Console.WriteLine($"Id: {course.CourseId}\nName: {course.Name}\nstart: {course.StartDate:d}\nEnd: {course.EndDate:d}");
-                                            Console.WriteLine();
-                                        }
-                                        Console.ReadKey();
+                                        MenuHelper.PrintCourses(courses);
                                     }
-                                     break;
+                                    Console.ReadKey();
+                                    break;
 
 
-                                     
+
 
                                 case CrudAction.Update:
                                     // Update Method here. Input - Entity
+
+                                    if (entity == EntityType.Student)
+                                    {
+                                        var student = MenuHelper.UpdateStudent();
+                                        StudentService.UpdateStudent(student.StudentId, student);
+                                    }
+                                    else if (entity == EntityType.Classroom)
+                                    {
+                                        var classroom = MenuHelper.UpdateClassroom();
+                                        ClassroomService.UpdateClassroom(classroom.ClassroomId, classroom);
+                                    }
+                                    else if (entity == EntityType.Teacher)
+                                    {
+                                        var teacher = MenuHelper.UpdateTeacher();
+                                        TeacherService.UpdateTeacher(teacher.TeacherId,teacher);
+                                    }
+                                    else if (entity == EntityType.Course)
+                                    {
+                                        var course = MenuHelper.UpdateCourse();
+                                        CourseService.UpdateCourse(course.CourseId, course);
+                                    }
                                     Console.WriteLine($"Updating {entity}...");
                                     Console.WriteLine("Press Enter to continue\n>");
-                                    Console.ReadLine();
+                                    Console.ReadKey();
                                     break;
 
                                 case CrudAction.Delete:
-                                    // Delete Method here. Input - Entity
+                                    if (entity == EntityType.Student)
+                                    {
+                                        MenuHelper.DeleteStudent(StudentService);
+                                    }
+                                    else if (entity == EntityType.Classroom)
+                                    {
+                                        MenuHelper.DeleteClassroom(ClassroomService);
+                                    }
+                                    else if (entity == EntityType.Teacher)
+                                    {
+                                        MenuHelper.DeleteTeacher(TeacherService);
+                                    }
+                                    else if (entity == EntityType.Course)
+                                    {
+                                        MenuHelper.DeleteCourse(CourseService);
+                                    }
                                     Console.WriteLine($"Deleting {entity}...");
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadLine();
