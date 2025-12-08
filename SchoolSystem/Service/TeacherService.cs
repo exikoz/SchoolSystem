@@ -1,18 +1,14 @@
-﻿using SchoolSystem.data;
-using SchoolSystemDB.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolSystem.Data;
+using SchoolSystem.Models;
+
 
 namespace SchoolSystem.Service
 {
     public class TeacherService
     {
-        private readonly SchoolContext _context;
+        private readonly SchoolSystemContext _context;
 
-        public TeacherService(SchoolContext context)
+        public TeacherService(SchoolSystemContext context)
         {
             _context = context;
 
@@ -38,8 +34,9 @@ namespace SchoolSystem.Service
             if (teacher == null)
                 return null;
 
-            teacher.FullName = updatedTeacher.FullName;
-            teacher.TeachingSubject = updatedTeacher.TeachingSubject;
+            teacher.FirstName = updatedTeacher.FirstName;
+            teacher.LastName = updatedTeacher.LastName;
+            teacher.Email = updatedTeacher.Email;
             _context.SaveChanges();
             return teacher;
         }

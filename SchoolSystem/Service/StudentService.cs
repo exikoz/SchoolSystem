@@ -1,20 +1,16 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using SchoolSystem.data;
-using SchoolSystemDB.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using SchoolSystem.Data;
+using SchoolSystem.Models;
+
 
 namespace SchoolSystem.Service
 {
 
     public class StudentService
     {
-        private readonly SchoolContext _context;
+        private readonly SchoolSystemContext _context;
 
-        public StudentService(SchoolContext context)
+        public StudentService(SchoolSystemContext context)
         {
             _context = context;
         }
@@ -40,7 +36,10 @@ namespace SchoolSystem.Service
             if (student == null)
                 return null;
 
-            student.FullName = updatedStudent.FullName;
+            student.FirstName = updatedStudent.FirstName;
+            student.LastName = updatedStudent.LastName;
+            student.Email = updatedStudent.Email;
+            student.PersonalNumber = updatedStudent.PersonalNumber;
             _context.SaveChanges();
             return student;
         }

@@ -1,18 +1,13 @@
-﻿using SchoolSystem.data;
-using SchoolSystemDB.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SchoolSystem.Data;
+using SchoolSystem.Models;
 
 namespace SchoolSystem.Service
 {
     public class ClassroomService
     {
-        public readonly SchoolContext _context;
+        public readonly SchoolSystemContext _context;
 
-        public ClassroomService(SchoolContext context)
+        public ClassroomService(SchoolSystemContext context)
         {
             _context = context;
         }
@@ -38,6 +33,7 @@ namespace SchoolSystem.Service
             if (classroom == null)
                 return null;
 
+            classroom.Name = updatedClassroom.Name;
             classroom.Capacity = updatedClassroom.Capacity;
             _context.SaveChanges();
             return classroom;
