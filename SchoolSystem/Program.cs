@@ -1,6 +1,7 @@
 using SchoolSystem.Data;
 using SchoolSystem.Models;
 using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Service;
 
 namespace SchoolSystem
 {
@@ -14,6 +15,10 @@ namespace SchoolSystem
                 // Detta skapar databasen om den inte finns (när migrationer är klara)
                 // context.Database.EnsureCreated(); 
                 Console.WriteLine("Context skapad och namespaces fungerar!");
+
+                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context));
+                menu.UseMainMenu();
+
             }
 
         }
