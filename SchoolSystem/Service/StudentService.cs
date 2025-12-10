@@ -38,7 +38,7 @@ namespace SchoolSystem.Service
 
             student.FirstName = updatedStudent.FirstName;
             student.LastName = updatedStudent.LastName;
-            student.Email = updatedStudent.Email;
+            student.StudentEmail = updatedStudent.StudentEmail;
             student.PersonalNumber = updatedStudent.PersonalNumber;
             _context.SaveChanges();
             return student;

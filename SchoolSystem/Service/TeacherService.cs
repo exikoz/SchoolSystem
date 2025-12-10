@@ -36,7 +36,7 @@ namespace SchoolSystem.Service
 
             teacher.FirstName = updatedTeacher.FirstName;
             teacher.LastName = updatedTeacher.LastName;
-            teacher.Email = updatedTeacher.Email;
+            teacher.TeacherEmail = updatedTeacher.TeacherEmail;
             _context.SaveChanges();
             return teacher;
         }

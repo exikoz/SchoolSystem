@@ -23,7 +23,7 @@ namespace SchoolSystem.ConsoleUI
             var inputEmail = Console.ReadLine();
 
 
-            return new Student { FirstName = inputName, LastName = inputLastName, PersonalNumber = inputPersonNumber, Email = inputEmail };
+            return new Student { FirstName = inputName, LastName = inputLastName, PersonalNumber = inputPersonNumber, StudentEmail = inputEmail };
 
 
         }
@@ -34,7 +34,7 @@ namespace SchoolSystem.ConsoleUI
             Console.Write("Enter capacity: ");
             var inputCapacity = Console.ReadLine();
 
-            return new Classroom { Name = inputClassRoomName, Capacity = int.Parse(inputCapacity) };
+            return new Classroom { ClassroomName = inputClassRoomName, Capacity = int.Parse(inputCapacity) };
 
 
         }
@@ -47,7 +47,7 @@ namespace SchoolSystem.ConsoleUI
             Console.Write("Enter valid email: ");
             var inputEmail = Console.ReadLine();
 
-            return new Teacher { FirstName = inputName, LastName = inputLastName, Email = inputEmail };
+            return new Teacher { FirstName = inputName, LastName = inputLastName, TeacherEmail = inputEmail };
 
         }
         public static Course CreateCourse()
@@ -65,7 +65,7 @@ namespace SchoolSystem.ConsoleUI
         {
             foreach (var student in students)
             {
-                Console.WriteLine($"Id: {student.StudentId} \nName: {student.FirstName} {student.LastName} \nEmail: {student.Email}\nPerson number: {student.PersonalNumber}");
+                Console.WriteLine($"Id: {student.StudentId} \nName: {student.FirstName} {student.LastName} \nEmail: {student.StudentEmail}\nPerson number: {student.PersonalNumber}");
                 Console.WriteLine();
             }
         }
@@ -73,7 +73,7 @@ namespace SchoolSystem.ConsoleUI
         {
             foreach (var classroom in classrooms)
             {
-                Console.WriteLine($"Id: {classroom.ClassroomId} \nName: {classroom.Name}\nCapacity: {classroom.Capacity}");
+                Console.WriteLine($"Id: {classroom.ClassroomId} \nName: {classroom.ClassroomName}\nCapacity: {classroom.Capacity}");
                 Console.WriteLine();
 
 
@@ -83,7 +83,7 @@ namespace SchoolSystem.ConsoleUI
         {
             foreach (var teacher in teachers)
             {
-                Console.WriteLine($"Id: {teacher.TeacherId} \nName: {teacher.FirstName} {teacher.LastName} \nEmail: {teacher.Email}");
+                Console.WriteLine($"Id: {teacher.TeacherId} \nName: {teacher.FirstName} {teacher.LastName} \nEmail: {teacher.TeacherEmail}");
                 Console.WriteLine();
             }
         }
@@ -119,7 +119,7 @@ namespace SchoolSystem.ConsoleUI
                 FirstName = firstName,
                 LastName = lastName,
                 PersonalNumber = personalNumber,
-                Email = email
+                StudentEmail = email
             };
         }
         public static Classroom UpdateClassroom()
@@ -136,7 +136,7 @@ namespace SchoolSystem.ConsoleUI
             return new Classroom
             {
                 ClassroomId = id,
-                Name = name,
+                ClassroomName = name,
                 Capacity = capacity
             };
         }
@@ -159,7 +159,7 @@ namespace SchoolSystem.ConsoleUI
                 TeacherId = id,
                 FirstName = firstName,
                 LastName = lastName,
-                Email = email
+                TeacherEmail = email
             };
         }
         public static Course UpdateCourse()
@@ -216,7 +216,7 @@ namespace SchoolSystem.ConsoleUI
             var id = int.Parse(Console.ReadLine());
             var classroom = classroomService.GetClassroomById(id);
 
-            Console.Write($"Are you sure that you want to delete this classroom: {classroom.Name} Capacity:{classroom.Capacity} ? (y/n)");
+            Console.Write($"Are you sure that you want to delete this classroom: {classroom.ClassroomName} Capacity:{classroom.Capacity} ? (y/n)");
             var answer = Console.ReadLine();
             if (answer == "y")
             {
