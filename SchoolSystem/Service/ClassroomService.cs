@@ -33,7 +33,7 @@ namespace SchoolSystem.Service
             if (classroom == null)
                 return null;
 
-            classroom.Name = updatedClassroom.Name;
+            classroom.ClassroomName = updatedClassroom.ClassroomName;
             classroom.Capacity = updatedClassroom.Capacity;
             _context.SaveChanges();
             return classroom;

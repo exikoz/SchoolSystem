@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolSystem.Models
 {
-    [Index(nameof(Name), IsUnique = true)]
+    [Index(nameof(ClassroomName), IsUnique = true)]
     public class Classroom
     {
         [Key]
@@ -11,7 +11,7 @@ namespace SchoolSystem.Models
 
         [Required]
         [MaxLength(50)]
-        public string Name { get; set; } = string.Empty;
+        public string ClassroomName { get; set; } = string.Empty;
 
         public int Capacity { get; set; }
 

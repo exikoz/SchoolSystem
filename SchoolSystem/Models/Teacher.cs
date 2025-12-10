@@ -18,7 +18,7 @@ namespace SchoolSystem.Models
 
         [MaxLength(100)]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string TeacherEmail { get; set; } = string.Empty;
 
         // Navigation Properties
         public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();

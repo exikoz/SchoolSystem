@@ -3,8 +3,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace SchoolSystem.Models
 {
-    [Index(nameof(Email), IsUnique = true)]
-    [Index(nameof(PersonalNumber), IsUnique = true)]
     public class Student
     {
         [Key]
@@ -25,7 +23,7 @@ namespace SchoolSystem.Models
         [Required]
         [MaxLength(100)]
         [EmailAddress]
-        public string Email { get; set; } = string.Empty;
+        public string StudentEmail { get; set; } = string.Empty;
 
         public DateTime CreatedAt { get; set; } = DateTime.Now;
 
