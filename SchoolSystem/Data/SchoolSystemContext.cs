@@ -31,5 +31,17 @@ namespace SchoolSystem.Data
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
 
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<Course>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<Classroom>().HasIndex(c => c.Name).IsUnique();
+            modelBuilder.Entity<Student>().HasIndex(s => s.Email).IsUnique();
+            modelBuilder.Entity<Student>().HasIndex(s => s.PersonalNumber).IsUnique();
+            modelBuilder.Entity<Teacher>().HasIndex(t => t.Email).IsUnique();
+        }
+
     }
+
+
 }
