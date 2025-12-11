@@ -9,9 +9,17 @@ using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
+    public class EnrollmentInput
+    {
+        public int EnrollmentId { get; set; }
+        public int StudentId { get; set; }
+        public int CourseId { get; set; }
+        public DateTime EnrollmentDate { get; set; }
+    }
     public class EnrollmentService
     {
-        public bool updateBool = false;
+        public bool createBool = false;
+        public bool deleteBool = false;
         public readonly SchoolSystemContext _context;
 
         public EnrollmentService(SchoolSystemContext context)
@@ -19,15 +27,24 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public Enrollment? CreateEnrollment(Enrollment enrollment)
+        public bool CreateEnrollment()
         {
-            if (ValidateEntity.ValidateDuplicateEnrollment(_context, updateBool, enrollment.EnrollmentId) == null) 
+            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool = true, deleteBool);
+            if (enrollmentInput == null) 
             {
-                return null;
+                return false;
             }
+            var enrollment = new Enrollment
+            {
+                // EnrollmentId left as 0 → EF generates it
+                StudentId = enrollmentInput.StudentId,
+                CourseId = enrollmentInput.CourseId,
+                EnrollmentDate = enrollmentInput.EnrollmentDate
+            };
             _context.Enrollments.Add(enrollment);
             _context.SaveChanges();
-            return enrollment;
+            Console.WriteLine($"Created enrollment with ID: {enrollment.EnrollmentId}");
+            return true;
         }
         public List<Enrollment> GetAllEnrollments()
         {
@@ -39,41 +56,39 @@ namespace SchoolSystem.Service
         }
         public bool UpdateEnrollment()
         {
-            Console.Write("Enter Enrollment ID to update: ");
-            var enrollmentId = int.Parse(Console.ReadLine());
-
-            var enrollment = ValidateEntity.ValidateEnrollmentExists(_context, enrollmentId);
-            if (enrollment == null)
+            // Validation
+            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool, deleteBool);
+            if (enrollmentInput == null)
             {
                 return false;
             }
 
-            var updatedEnrollment = ValidateEntity.ValidateDuplicateEnrollment(_context, updateBool = true, enrollmentId);
-            if (updatedEnrollment == null)
-            {
-                return false;
-            }
+            // Loading the existing enrollment from the database
+            var enrollment = _context.Enrollments.Find(enrollmentInput.EnrollmentId);
 
-            enrollment.CourseId = updatedEnrollment.CourseId;
-            enrollment.StudentId = updatedEnrollment.StudentId;
-            enrollment.EnrollmentDate = updatedEnrollment.EnrollmentDate;
+
+            enrollment.CourseId = enrollmentInput.CourseId;
+            enrollment.StudentId = enrollmentInput.StudentId;
+            enrollment.EnrollmentDate = enrollmentInput.EnrollmentDate;
             _context.SaveChanges();
+            Console.WriteLine($"Updated enrollment with ID: {enrollment.EnrollmentId}");
             return true;
         }
-        public bool DeleteEnrollment(int id)
+        public bool DeleteEnrollment()
         {
-            var enrollment = ValidateEntity.ValidateEnrollmentExists(_context, id);
-            
-            if (enrollment == null)
+            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool, deleteBool = true);
+
+            if (enrollmentInput == null)
             {
                 return false;
             }
+
+            var enrollment = _context.Enrollments.Find(enrollmentInput.EnrollmentId);
 
             _context.Enrollments.Remove(enrollment);
             _context.SaveChanges();
+            Console.WriteLine($"Deleted enrollment with ID: {enrollment.EnrollmentId}");
             return true;
         }
-
-
     }
 }

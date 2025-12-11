@@ -17,9 +17,10 @@ namespace SchoolSystem
         public CourseService CourseService { get; set; }
         public ScheduleService ScheduleService { get; set; }
         public EnrollmentService EnrollmentService { get; set; }
+        public GradeService GradeService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
@@ -27,6 +28,7 @@ namespace SchoolSystem
             CourseService = courseService;
             ScheduleService = scheduleService;
             EnrollmentService = enrollmentService;
+            GradeService = gradeService;
         }
 
         public enum CrudAction
@@ -44,7 +46,8 @@ namespace SchoolSystem
             Teacher = 3,
             Course = 4,
             Schedule = 5,
-            Enrollment = 6
+            Enrollment = 6,
+            Grade = 7
         };
 
         public void UseMainMenu()
@@ -76,8 +79,9 @@ namespace SchoolSystem
                 "Classroom",
                 "Teacher",
                 "Course",
-                "Schedule",
-                "Enrollment"
+                "Schedule (Requires Course, Teacher, Classroom)",
+                "Enrollment (Requires Course, Student)",
+                "Grade (Requires Enrollment, Teacher)"
             };
 
 
@@ -160,13 +164,19 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Enrollment)
                                     {
-                                        var enrollment = MenuHelper.CreateEnrollment();
-                                        if (EnrollmentService.CreateEnrollment(enrollment) == null)
+                                        var enrollment = EnrollmentService.CreateEnrollment();
+                                        if (enrollment == null)
                                         {
                                             break;
                                         }
-                                        Console.WriteLine($"Created enrollment with ID: {enrollment.EnrollmentId}");
-
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        var grade = GradeService.CreateGrade();
+                                        if (grade == null)
+                                        {
+                                            break;
+                                        }
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
@@ -205,6 +215,11 @@ namespace SchoolSystem
                                         var enrollment = EnrollmentService.GetAllEnrollments();
                                         MenuHelper.PrintEnrollment(enrollment);
 
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        var grade = GradeService.GetAllGrades();
+                                        MenuHelper.PrintGrade(grade);
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
@@ -246,6 +261,10 @@ namespace SchoolSystem
                                     {
                                         EnrollmentService.UpdateEnrollment();
                                     }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        GradeService.UpdateGrade();
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
@@ -275,7 +294,11 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Enrollment)
                                     {
-                                        MenuHelper.DeleteEnrollment(EnrollmentService);
+                                        EnrollmentService.DeleteEnrollment();
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        GradeService.DeleteGrade();
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadLine();

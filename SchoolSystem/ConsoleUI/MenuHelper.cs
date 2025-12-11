@@ -80,16 +80,6 @@ namespace SchoolSystem.ConsoleUI
             return new Schedule {CourseId = courseId, TeacherId = teacherId, ClassroomId = classroomId, StartTime = startTime, EndTime = endTime };
         }
 
-        public static Enrollment CreateEnrollment()
-        {
-            Console.Write("Enter Course ID: ");
-            var courseId = int.Parse(Console.ReadLine());
-            Console.Write("Enter Student ID: ");
-            var studentId = int.Parse(Console.ReadLine());
-
-            return new Enrollment { StudentId = studentId, CourseId = courseId};
-        }
-
         public static void PrintStudents(List<Student> students)
         {
             foreach (var student in students)
@@ -139,6 +129,15 @@ namespace SchoolSystem.ConsoleUI
             foreach (var enrollment in enrollments)
             {
                 Console.WriteLine($"Id: {enrollment.EnrollmentId} \nEnrollment date: {enrollment.EnrollmentDate}");
+                Console.WriteLine();
+            }
+        }
+
+        public static void PrintGrade(List<Grade> grades)
+        {
+            foreach (var grade in grades)
+            {
+                Console.WriteLine($"Id: {grade.GradeId} \nGrade date: {grade.GradeDate}");
                 Console.WriteLine();
             }
         }
@@ -315,20 +314,6 @@ namespace SchoolSystem.ConsoleUI
             if (answer == "y")
             {
                 scheduleService.DeleteSchedule(id);
-            }
-        }
-
-        public static void DeleteEnrollment(EnrollmentService enrollmentService)
-        {
-            Console.Write("EnterSchedule ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var enrollment = enrollmentService.GetEnrollmentById(id);
-
-            Console.Write($"Are you sure that you want to delete enrollment {enrollment.EnrollmentId}: {enrollment.EnrollmentDate} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                enrollmentService.DeleteEnrollment(id);
             }
         }
     }

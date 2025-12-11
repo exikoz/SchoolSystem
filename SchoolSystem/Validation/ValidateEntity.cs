@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Data;
 using SchoolSystem.Models;
+using SchoolSystem.Service;
 
 namespace SchoolSystem.Validation
 {
@@ -54,61 +55,83 @@ namespace SchoolSystem.Validation
         }
 
 
-        public static Enrollment? ValidateDuplicateEnrollment(SchoolSystemContext context, bool updateBool, int enrollmentId)
+        public static EnrollmentInput? ValidateDuplicateEnrollment(SchoolSystemContext context, bool createBool, bool deleteBool)
         {
+
+            int enrollmentId = 0;
+
+            if (!createBool)
             {
-                
-                // Check duplicate EnrollmentId
-                if (updateBool == false)
-                {
-                    if (context.Enrollments.Any(e => e.EnrollmentId == enrollmentId))
-                    {
-                        Console.WriteLine("An enrollment with this enrollment ID already exists. Returning to the CRUD menu");
-                        return null;
-                    }
-                }
+                Console.WriteLine("Enter enrollment ID: ");
 
-                Console.Write("Enter the ID of the student you want to reference: ");
-                var studentId = int.Parse(Console.ReadLine());
-                
-                // Check StudentId exists
-                if (!context.Students.Any(s => s.StudentId == studentId))
+                // Check user input
+                if (!int.TryParse(Console.ReadLine(), out enrollmentId))
                 {
-                    Console.WriteLine("Invalid student ID. No student with this ID exists. Returning to the CRUD menu");
+                    Console.WriteLine("Invalid input, please try again");
                     return null;
                 }
-
-                Console.Write("Enter the ID of the course you want to reference: ");
-                var courseId = int.Parse(Console.ReadLine());
-
-                // Check CourseId exists
-                if (!context.Courses.Any(c => c.CourseId == courseId))
+                // Check if ID doesn't exist for Update & Delete options
+                if (!context.Enrollments.Any(e => e.EnrollmentId == enrollmentId))
                 {
-                    Console.WriteLine("Invalid course ID. No course with this ID exists. Returning to the CRUD menu");
+                    Console.WriteLine("An enrollment with this enrollment ID doesn't exist. Returning to the CRUD menu");
                     return null;
                 }
-
-
-                Console.Write("Enter new Enrollment date (yyyy-MM-dd hh:mm:ss): ");
-                string input = Console.ReadLine();
-
-                if (!DateTime.TryParse(input, out DateTime enrollmentDate))
+                // Check if delete CRUD option was selected and return
+                if (deleteBool)
                 {
-                    Console.WriteLine("Invalid date format. Please enter a valid date.");
-                    return null;
+                    return new EnrollmentInput { EnrollmentId = enrollmentId };
                 }
-
-
-                var updatedEnrollment = new Enrollment
-                {
-                    EnrollmentId = enrollmentId,
-                    CourseId = courseId,
-                    StudentId = studentId,
-                    EnrollmentDate = enrollmentDate
-                };
-               
-                return updatedEnrollment;
             }
+            // Check if enrollment ID already exists for Create option
+            else
+            {
+                if (context.Enrollments.Any(e => e.EnrollmentId == enrollmentId))
+                {
+                    Console.WriteLine("An enrollment with this enrollment ID already exists. Returning to the CRUD menu");
+                    return null;
+                }
+            }
+
+            
+            // If delete bool is false then we either Update or Create
+
+            // Check if foreign keys do not exist
+            Console.Write("Enter the ID of the student you want to reference: ");
+            var studentId = int.Parse(Console.ReadLine());
+
+            if (!context.Students.Any(s => s.StudentId == studentId))
+            {
+                Console.WriteLine("Invalid student ID. No student with this ID exists. Returning to the CRUD menu");
+                return null;
+            }
+
+            Console.Write("Enter the ID of the course you want to reference: ");
+            var courseId = int.Parse(Console.ReadLine());
+
+            if (!context.Courses.Any(c => c.CourseId == courseId))
+            {
+                Console.WriteLine("Invalid course ID. No course with this ID exists. Returning to the CRUD menu");
+                return null;
+            }
+
+            // User input DateTime validation
+            Console.Write("Enter Enrollment date (yyyy-MM-dd hh:mm:ss): ");
+            string input = Console.ReadLine();
+
+            if (!DateTime.TryParse(input, out DateTime enrollmentDate))
+            {
+                Console.WriteLine("Invalid date format. Please enter a valid date.");
+                return null;
+            }
+
+            return new EnrollmentInput
+            {
+                EnrollmentId = enrollmentId,
+                StudentId = studentId,
+                CourseId = courseId,
+                EnrollmentDate = enrollmentDate
+            };
+
         }
 
         public static bool ValidateDuplicateSchedule(SchoolSystemContext context, Schedule schedule)
@@ -144,43 +167,92 @@ namespace SchoolSystem.Validation
             return true;
         }
 
-        public static bool ValidateDuplicateGrade(SchoolSystemContext context, Grade grade)
+        public static GradeInput? ValidateDuplicateGrade(SchoolSystemContext context, bool createBool, bool deleteBool)
         {
-            // Check duplicate GradeId
-            if (context.Grades.Any(g => g.GradeId == grade.GradeId))
+
+            int gradeId = 0;
+
+            if (!createBool)
             {
-                Console.WriteLine("A grade with this grade ID already exists. Returning to the CRUD menu");
-                return false;
+                Console.Write("Enter grade ID: ");
+                // Check user input
+                if (!int.TryParse(Console.ReadLine(), out gradeId))
+                {
+                    Console.WriteLine("Invalid input, please try again");
+                    return null;
+                }
+                // Check if ID doesn't exist for Update & Delete options
+                if (!context.Grades.Any(g => g.GradeId == gradeId))
+                {
+                    Console.WriteLine("A grade with this ID does not exist. Returning to the CRUD menu");
+                    return null;
+                }
+
+                // Check if delete CRUD option was selected and return
+                if (deleteBool)
+                {
+                    return new GradeInput { GradeId = gradeId };
+                }
+            }
+            else
+            {
+                // Check if enrollment ID already exists for Create option
+                if (context.Grades.Any(g => g.GradeId == gradeId))
+                {
+                    Console.WriteLine("A grade with this ID already exists. Returning to the CRUD menu");
+                    return null;
+                }
             }
 
-            // Check EnrollmentId exists
-            if (!context.Enrollments.Any(e => e.EnrollmentId == grade.EnrollmentId))
+            // If delete bool is false then we either Update or Create
+
+            // Check if foreign keys do not exist
+            Console.Write("Enter the ID of the enrollment you want to reference: ");
+            var enrollmentId = int.Parse(Console.ReadLine());
+
+            if (!context.Enrollments.Any(e => e.EnrollmentId == enrollmentId))
             {
                 Console.WriteLine("Invalid enrollment ID. No enrollment with this ID exists. Returning to the CRUD menu");
-                return false;
+                return null;
             }
 
-            // Check TeacherId exists
-            if (!context.Teachers.Any(t => t.TeacherId == grade.TeacherId))
+            Console.Write("Enter the ID of the teacher you want to reference: ");
+            var teacherId = int.Parse(Console.ReadLine());
+
+            if (!context.Teachers.Any(c => c.TeacherId == teacherId))
             {
                 Console.WriteLine("Invalid teacher ID. No teacher with this ID exists. Returning to the CRUD menu");
-                return false;
+                return null;
             }
 
-            return true;
-        }
+            // User input DateTime validation
+            Console.Write("Enter Grade date (yyyy-MM-dd hh:mm:ss): ");
+            string input = Console.ReadLine();
 
-        public static Enrollment? ValidateEnrollmentExists(SchoolSystemContext context, int id)
-        {
-            // Check EnrollmentId exists
-            var enrollment = context.Enrollments.Find(id);
-
-            if (enrollment == null)
+            if (!DateTime.TryParse(input, out DateTime gradeDate))
             {
-                Console.WriteLine("No enrollment with this ID exists. Returning to the CRUD menu");
+                Console.WriteLine("Invalid date format. Please enter a valid date.");
                 return null;
-            }  
-            return enrollment;
+            }
+
+            Console.Write("Enter Grade value A–F, optionally + or -, except for F: ");
+            string gradeValue = Console.ReadLine()?.Trim().ToUpper();
+
+            if (string.IsNullOrWhiteSpace(gradeValue) || !System.Text.RegularExpressions.Regex.IsMatch(gradeValue, @"^[A-E][+-]?$|^F$"))
+            {
+                Console.WriteLine("Invalid grade format. Use A–E with optional + or -, or F without modifiers.");
+                return null;
+
+            }
+
+            return new GradeInput
+            {
+                GradeId = gradeId,
+                EnrollmentId = enrollmentId,
+                TeacherId = teacherId,
+                GradeValue = gradeValue,
+                GradeDate = gradeDate
+            };
         }
     }
 }
