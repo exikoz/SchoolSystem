@@ -110,6 +110,7 @@ namespace SchoolSystem.Validation
                 return updatedEnrollment;
             }
         }
+
         public static bool ValidateDuplicateSchedule(SchoolSystemContext context, Schedule schedule)
         {
             // Check duplicate ScheduleId
