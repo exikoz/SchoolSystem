@@ -1,5 +1,6 @@
 ﻿using SchoolSystem.Data;
 using SchoolSystem.Models;
+using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
@@ -12,8 +13,12 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public Classroom CreateClasroom(Classroom classroom)
+        public Classroom? CreateClasroom(Classroom classroom)
         {
+            if (!ValidateEntity.ValidateDuplicateClassroom(_context, classroom))
+            {
+                return null;
+            }
             _context.Classrooms.Add(classroom);
             _context.SaveChanges();
             return classroom;

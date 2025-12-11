@@ -7,6 +7,7 @@ namespace SchoolSystem.Models
     public class Grade
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int GradeId { get; set; }
 
         public int EnrollmentId { get; set; }

@@ -15,14 +15,16 @@ namespace SchoolSystem
         public ClassroomService ClassroomService { get; set; }
         public TeacherService TeacherService { get; set; }
         public CourseService CourseService { get; set; }
+        public ScheduleService ScheduleService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
             TeacherService = teacherService;
             CourseService = courseService;
+            ScheduleService = scheduleService;
         }
 
         public enum CrudAction
@@ -39,6 +41,7 @@ namespace SchoolSystem
             Classroom = 2,
             Teacher = 3,
             Course = 4,
+            Schedule = 5
         };
 
         public void UseMainMenu()
@@ -69,7 +72,8 @@ namespace SchoolSystem
                 "Student",
                 "Classroom",
                 "Teacher",
-                "Course"
+                "Course",
+                "Schedule"
             };
 
 
@@ -106,28 +110,51 @@ namespace SchoolSystem
                                     if (entity == EntityType.Student)
                                     {
                                         var student = MenuHelper.CreateStudent();
-                                        StudentService.CreateStudent(student);
+                                        if (StudentService.CreateStudent(student) == null)
+                                        {
+                                            break;
+                                        }
                                         Console.WriteLine($"Created student with ID: {student.StudentId}");
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
                                         var classroom = MenuHelper.CreateClassroom();
-                                        ClassroomService.CreateClasroom(classroom);
+                                        if (ClassroomService.CreateClasroom(classroom) == null)
+                                        {
+                                            break;
+                                        }
                                         Console.WriteLine($"Created classroom with ID: {classroom.ClassroomId}");
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
                                         var teacher = MenuHelper.CreateTeacher();
-                                        TeacherService.CreateTeacher(teacher);
+                                        if (TeacherService.CreateTeacher(teacher) == null)
+                                        {
+                                            break;
+                                        }
                                         Console.WriteLine($"Created teacher with ID: {teacher.TeacherId}");
                                     }
                                     else if (entity == EntityType.Course)
                                     {
                                         var course = MenuHelper.CreateCourse();
-                                        CourseService.CreateCourse(course);
+                                        if (CourseService.CreateCourse(course) == null)
+                                        {
+                                            break;
+                                        }
                                         Console.WriteLine($"Created course with ID: {course.CourseId}");
                                         
                                     }
+                                    else if (entity == EntityType.Schedule)
+                                    {
+                                        var schedule = MenuHelper.CreateSchedule();
+                                        if (ScheduleService.CreateSchedule(schedule) == null)
+                                        {
+                                            break;
+                                        }
+                                        Console.WriteLine($"Created schedule with ID: {schedule.ScheduleId}");
+
+                                    }
+                                    Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
 
@@ -153,6 +180,13 @@ namespace SchoolSystem
                                         var courses = CourseService.GetAllCourses();
                                         MenuHelper.PrintCourses(courses);
                                     }
+                                    else if (entity == EntityType.Schedule)
+                                    {
+                                        var schedule = ScheduleService.GetAllSchedules();
+                                        MenuHelper.PrintSchedule(schedule);
+
+                                    }
+                                    Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
 
@@ -181,6 +215,12 @@ namespace SchoolSystem
                                     {
                                         var course = MenuHelper.UpdateCourse();
                                         CourseService.UpdateCourse(course.CourseId, course);
+                                    }
+                                    else if (entity == EntityType.Schedule)
+                                    {
+                                        var schedule = MenuHelper.UpdateSchedule();
+                                        ScheduleService.UpdateSchedule(schedule.ScheduleId, schedule);
+
                                     }
                                     Console.WriteLine($"Updating {entity}...");
                                     Console.WriteLine("Press Enter to continue\n>");
