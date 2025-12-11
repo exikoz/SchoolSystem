@@ -50,8 +50,8 @@ namespace SchoolSystem
             List<string> menuOptions = new List<string>
             {
                 "CRUD-operations",
-                "Assign course schedule",
-                "Register student into a course",
+                "Assign course schedule", //Maybe Delete
+                "Register student into a course", //Maybe Delete
                 "Student overview",
                 "List active courses and participating students",
                 "Student ratio between passed and failed"

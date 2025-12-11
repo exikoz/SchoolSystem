@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SchoolSystem.Models
 {
-    [Index(nameof(Name), IsUnique = true)]
     public class Classroom
     {
         [Key]
