@@ -16,7 +16,7 @@ namespace SchoolSystem
                 // context.Database.EnsureCreated(); 
                 Console.WriteLine("Context skapad och namespaces fungerar!");
 
-                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(context));
+                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(context), new EnrollmentService(context));
                 menu.UseMainMenu();
 
             }

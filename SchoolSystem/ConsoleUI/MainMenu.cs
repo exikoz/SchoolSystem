@@ -16,15 +16,17 @@ namespace SchoolSystem
         public TeacherService TeacherService { get; set; }
         public CourseService CourseService { get; set; }
         public ScheduleService ScheduleService { get; set; }
+        public EnrollmentService EnrollmentService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
             TeacherService = teacherService;
             CourseService = courseService;
             ScheduleService = scheduleService;
+            EnrollmentService = enrollmentService;
         }
 
         public enum CrudAction
@@ -41,7 +43,8 @@ namespace SchoolSystem
             Classroom = 2,
             Teacher = 3,
             Course = 4,
-            Schedule = 5
+            Schedule = 5,
+            Enrollment = 6
         };
 
         public void UseMainMenu()
@@ -73,7 +76,8 @@ namespace SchoolSystem
                 "Classroom",
                 "Teacher",
                 "Course",
-                "Schedule"
+                "Schedule",
+                "Enrollment"
             };
 
 
@@ -154,6 +158,16 @@ namespace SchoolSystem
                                         Console.WriteLine($"Created schedule with ID: {schedule.ScheduleId}");
 
                                     }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        var enrollment = MenuHelper.CreateEnrollment();
+                                        if (EnrollmentService.CreateEnrollment(enrollment) == null)
+                                        {
+                                            break;
+                                        }
+                                        Console.WriteLine($"Created enrollment with ID: {enrollment.EnrollmentId}");
+
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
@@ -184,6 +198,12 @@ namespace SchoolSystem
                                     {
                                         var schedule = ScheduleService.GetAllSchedules();
                                         MenuHelper.PrintSchedule(schedule);
+
+                                    }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        var enrollment = EnrollmentService.GetAllEnrollments();
+                                        MenuHelper.PrintEnrollment(enrollment);
 
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
@@ -222,10 +242,15 @@ namespace SchoolSystem
                                         ScheduleService.UpdateSchedule(schedule.ScheduleId, schedule);
 
                                     }
-                                    Console.WriteLine($"Updating {entity}...");
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        EnrollmentService.UpdateEnrollment();
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
+
+
 
                                 case CrudAction.Delete:
                                     if (entity == EntityType.Student)
@@ -244,7 +269,14 @@ namespace SchoolSystem
                                     {
                                         MenuHelper.DeleteCourse(CourseService);
                                     }
-                                    Console.WriteLine($"Deleting {entity}...");
+                                    else if (entity == EntityType.Schedule)
+                                    {
+                                        MenuHelper.DeleteSchedule(ScheduleService);
+                                    }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        MenuHelper.DeleteEnrollment(EnrollmentService);
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadLine();
                                     break;
