@@ -8,6 +8,7 @@ namespace SchoolSystem.Models
     public class Enrollment
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int EnrollmentId { get; set; }
 
         public int StudentId { get; set; }

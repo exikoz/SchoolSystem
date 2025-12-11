@@ -1,5 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace SchoolSystem.Models
 {
@@ -7,6 +8,7 @@ namespace SchoolSystem.Models
     public class Classroom
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ClassroomId { get; set; }
 
         [Required]

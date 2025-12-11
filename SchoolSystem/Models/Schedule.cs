@@ -7,6 +7,7 @@ namespace SchoolSystem.Models
     public class Schedule
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int ScheduleId { get; set; }
 
         public int CourseId { get; set; }
@@ -21,7 +22,7 @@ namespace SchoolSystem.Models
         [ForeignKey("ClassroomId")]
         public virtual Classroom Classroom { get; set; } = null!;
 
-        public DateTime StartTime { get; set; }
-        public DateTime EndTime { get; set; }
+        public TimeOnly StartTime { get; set; }
+        public TimeOnly EndTime { get; set; }
     }
 }
