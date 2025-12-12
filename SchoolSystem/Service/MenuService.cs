@@ -123,5 +123,42 @@ namespace SchoolSystem.Service
                 }
             }
         }
+        public void ShowStudentGradeOverview()
+        {
+            Console.Write("Enter student ID:");
+            int studentId = int.Parse(Console.ReadLine());
+
+            var studentGradeOverview = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Grades).ThenInclude(g => g.Teacher)
+                .Include(s => s.Enrollments).ThenInclude(e => e.Course).ToList();
+
+            if (!studentGradeOverview.Any())
+            {
+                Console.WriteLine("This student does not exist in the database.");
+                return;
+            }
+
+            foreach (var student in studentGradeOverview)
+            {
+                Console.WriteLine($"Student {student.FirstName}, {student.LastName}, {student.Email} ");
+                Console.WriteLine("Courses and grades:");
+                //SelectMany takes grades from all courses which the student is enrolled in
+                var allGrades = student.Enrollments.SelectMany(e => e.Grades).ToList();
+
+                if (!allGrades.Any())
+                {
+                    Console.WriteLine("This student does not have any grades yet.");
+                }
+                else
+                {
+                    foreach (var grade in allGrades)
+                    {
+                        Console.WriteLine($"Course: {grade.Enrollment.Course.Name}");
+                        Console.WriteLine($"Grade: {grade.GradeValue}");
+                        Console.WriteLine($"Teacher: {grade.Teacher.FirstName} {grade.Teacher.LastName}");
+                        Console.WriteLine($"Date: {grade.GradeDate}");
+                    }
+                }
+            }
+        }
     }
 }
