@@ -30,6 +30,10 @@ namespace SchoolSystem.ConsoleUI
                     case 0:
                         Console.WriteLine("\nThank you for using School System!");
                         return;
+                    // Invalid input
+                    default:
+                        Console.WriteLine("\n Invalid input! Please select an option between 0–1.\n");
+                        continue;
                 }
             }
         }

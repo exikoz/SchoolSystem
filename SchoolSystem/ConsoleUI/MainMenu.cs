@@ -18,8 +18,7 @@ namespace SchoolSystem
         public ScheduleService ScheduleService { get; set; }
         public EnrollmentService EnrollmentService { get; set; }
         public GradeService GradeService { get; set; }
-        public MenuService MenuService{ get; set; }
-        
+        public MenuService MenuService { get; set; }
 
 
         public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService, MenuService menuService)
@@ -157,29 +156,15 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
-                                        var schedule = MenuHelper.CreateSchedule();
-                                        if (ScheduleService.CreateSchedule(schedule) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created schedule with ID: {schedule.ScheduleId}");
-
+                                        ScheduleService.CreateSchedule();
                                     }
                                     else if (entity == EntityType.Enrollment)
                                     {
-                                        var enrollment = EnrollmentService.CreateEnrollment();
-                                        if (enrollment == null)
-                                        {
-                                            break;
-                                        }
+                                        EnrollmentService.CreateEnrollment();
                                     }
                                     else if (entity == EntityType.Grade)
                                     {
-                                        var grade = GradeService.CreateGrade();
-                                        if (grade == null)
-                                        {
-                                            break;
-                                        }
+                                        GradeService.CreateGrade();
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
@@ -256,9 +241,7 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
-                                        var schedule = MenuHelper.UpdateSchedule();
-                                        ScheduleService.UpdateSchedule(schedule.ScheduleId, schedule);
-
+                                        ScheduleService.UpdateSchedule();
                                     }
                                     else if (entity == EntityType.Enrollment)
                                     {
@@ -293,7 +276,7 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
-                                        MenuHelper.DeleteSchedule(ScheduleService);
+                                        ScheduleService.DeleteSchedule();
                                     }
                                     else if (entity == EntityType.Enrollment)
                                     {
@@ -318,9 +301,15 @@ namespace SchoolSystem
                         break;
                     // Student overview
                     case 4:
+                        MenuService.ShowStudentOverview();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
                         break;
                     // List active course and participating students
                     case 5:
+                        MenuService.ShowActiveCoursesWithStudents();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
                         break;
                     // Student ratio between passed and failed 
                     case 6:
@@ -331,7 +320,7 @@ namespace SchoolSystem
                         return;
                     // Invalid input
                     default:
-                        Console.WriteLine("\n Invalid input! Please enter a number between 0–9.\n");
+                        Console.WriteLine("\n Invalid input! Please an option between 0–6.\n");
                         continue;
                 }
             }
