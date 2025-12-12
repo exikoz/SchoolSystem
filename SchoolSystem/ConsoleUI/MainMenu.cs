@@ -302,10 +302,14 @@ namespace SchoolSystem
                     // Student overview
                     case 4:
                         MenuService.ShowStudentOverview();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
                         break;
                     // List active course and participating students
                     case 5:
                         MenuService.ShowActiveCoursesWithStudents();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
                         break;
                     // Student ratio between passed and failed 
                     case 6:
