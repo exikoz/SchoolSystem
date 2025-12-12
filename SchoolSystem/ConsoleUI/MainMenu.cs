@@ -18,9 +18,10 @@ namespace SchoolSystem
         public ScheduleService ScheduleService { get; set; }
         public EnrollmentService EnrollmentService { get; set; }
         public GradeService GradeService { get; set; }
+        public MenuService MenuService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService, MenuService menuService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
@@ -29,6 +30,7 @@ namespace SchoolSystem
             ScheduleService = scheduleService;
             EnrollmentService = enrollmentService;
             GradeService = gradeService;
+            MenuService = menuService;
         }
 
         public enum CrudAction
@@ -315,9 +317,11 @@ namespace SchoolSystem
                         break;
                     // Student overview
                     case 4:
+                        MenuService.ShowStudentOverview();
                         break;
                     // List active course and participating students
                     case 5:
+                        MenuService.ShowActiveCoursesWithStudents();
                         break;
                     // Student ratio between passed and failed 
                     case 6:

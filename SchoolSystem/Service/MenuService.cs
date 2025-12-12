@@ -26,18 +26,63 @@ namespace SchoolSystem.Service
             int WhatStudentId = int.Parse(Console.ReadLine());
             // Gets enrollment, courses and student
 
-            var studentOverviewInDatabase = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).FirstOrDefault(s => s.StudentId == WhatStudentId);
+            var StudentOverviewInDatabase = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).FirstOrDefault(s => s.StudentId == WhatStudentId);
 
-            if (studentOverviewInDatabase != null)
+            if (StudentOverviewInDatabase != null)
             {
                 Console.WriteLine("Student overview:");
-                Console.WriteLine($"Name: {studentOverviewInDatabase.FirstName} {studentOverviewInDatabase.LastName}");
-                Console.WriteLine($"SSN: {studentOverviewInDatabase.PersonalNumber}");
-                Console.WriteLine($"Email: {studentOverviewInDatabase.Email}");
+                Console.WriteLine($"Name: {StudentOverviewInDatabase.FirstName} {StudentOverviewInDatabase.LastName}");
+                Console.WriteLine($"SSN: {StudentOverviewInDatabase.PersonalNumber}");
+                Console.WriteLine($"Email: {StudentOverviewInDatabase.Email}");
+                Console.WriteLine("Courses:");
+                if (StudentOverviewInDatabase.Enrollments.Any())
+                {
+                    foreach (var enrollment in StudentOverviewInDatabase.Enrollments)
+                    {
+                        Console.WriteLine($" {enrollment.Course.Name} ");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine(" - No courses enrolled.");
+                }
             }
             else
             {
                 Console.WriteLine("Student not found.");
+            }
+        }
+        public void ShowActiveCoursesWithStudents()
+        {
+            DateTime today = DateTime.Today;
+
+            var activeCourses = _context.Courses.Where(c => c.StartDate <= today && c.EndDate >= today).Include(c => c.Enrollments).ThenInclude(e => e.Student).ToList();
+
+            if (!activeCourses.Any())
+            {
+                Console.WriteLine("No active courses at the moment.");
+                return;
+            }
+
+            Console.WriteLine("Active courses and participating students:");
+
+            foreach (var course in activeCourses)
+            {
+                Console.WriteLine($"Course: {course.Name}");
+                Console.WriteLine($"Period: {course.StartDate:dd-MM-yyyy} → {course.EndDate:dd-MM-yyyy}");
+
+                var enrolledStudents = course.Enrollments.Select(e => e.Student).ToList();
+                if (enrolledStudents.Any())
+                {
+                    foreach (var student in enrolledStudents)
+                    {
+                        Console.WriteLine($"{student.FirstName} {student.LastName} ({student.Email})");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("No students enrolled."); 
+                }
             }
         }
     }
