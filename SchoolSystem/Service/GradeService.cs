@@ -10,6 +10,7 @@ using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
+    // Creating a class where user input data will be stored and then used for either Create and Update an entity.
     public class GradeInput
     {
         public int GradeId { get; set; } 
@@ -30,12 +31,12 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public bool CreateGrade()
+        public void CreateGrade()
         {
-            var gradeInput = ValidateEntity.ValidateDuplicateGrade(_context, createBool = true, deleteBool);
+            var gradeInput = ValidateEntity.ValidateGrade(_context, createBool = true, deleteBool);
             if (gradeInput == null)
             {
-                return false;
+                return;
             }
 
             var grade = new Grade
@@ -48,8 +49,7 @@ namespace SchoolSystem.Service
 
             _context.Grades.Add(grade);
             _context.SaveChanges();
-            Console.WriteLine($"Created grade with ID: {grade.GradeId}");
-            return true;
+            Console.WriteLine($"Successfully created grade with ID: {grade.GradeId}");
         }
         public List<Grade> GetAllGrades()
         {
@@ -59,13 +59,13 @@ namespace SchoolSystem.Service
         {
             return _context.Grades.Find(id);
         }
-        public bool UpdateGrade()
+        public void UpdateGrade()
         {
             // Validation
-            var gradeInput = ValidateEntity.ValidateDuplicateGrade(_context, createBool, deleteBool);
+            var gradeInput = ValidateEntity.ValidateGrade(_context, createBool, deleteBool);
             if (gradeInput == null)
             {
-                return false;
+                return;
             }
 
             // Loading the existing grade from the database
@@ -77,29 +77,23 @@ namespace SchoolSystem.Service
             grade.GradeDate = gradeInput.GradeDate;
 
             _context.SaveChanges();
-            Console.WriteLine($"Updated grade with ID: {grade.GradeId}");
-            return true;
-
-
-
+            Console.WriteLine($"Successfully updated grade with ID: {grade.GradeId}");
         }
-        public bool DeleteGrade()
+
+        public void DeleteGrade()
         {
-            var gradeInput = ValidateEntity.ValidateDuplicateGrade(_context, createBool, deleteBool = true);
+            var gradeInput = ValidateEntity.ValidateGrade(_context, createBool, deleteBool = true);
 
             if (gradeInput == null)
             {
-                return false;
+                return;
             }
             
             var grade = _context.Grades.Find(gradeInput.GradeId);
 
             _context.Grades.Remove(grade);
             _context.SaveChanges();
-            Console.WriteLine($"Deleted grade with ID: {grade.GradeId}");
-            return true;
+            Console.WriteLine($"Successfully deleted grade with ID: {grade.GradeId}");
         }
-
-
     }
 }

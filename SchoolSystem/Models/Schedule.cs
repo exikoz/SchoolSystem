@@ -22,7 +22,7 @@ namespace SchoolSystem.Models
         [ForeignKey("ClassroomId")]
         public virtual Classroom Classroom { get; set; } = null!;
 
-        public TimeOnly StartTime { get; set; }
-        public TimeOnly EndTime { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
     }
 }

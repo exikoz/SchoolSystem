@@ -64,22 +64,7 @@ namespace SchoolSystem.ConsoleUI
             return new Course { Name = courseName, StartDate = startDate, EndDate = endDate };
         }
 
-        public static Schedule CreateSchedule()
-        {
-            Console.Write("Enter Course ID: ");
-            var courseId = int.Parse(Console.ReadLine());
-            Console.Write("Enter Teacher ID: ");
-            var teacherId = int.Parse(Console.ReadLine());
-            Console.Write("Enter Classroom ID: ");
-            var classroomId = int.Parse(Console.ReadLine());
-            Console.Write("Enter start time: ");
-            var startTime = TimeOnly.Parse(Console.ReadLine());
-            Console.Write("Enter end time: ");
-            var endTime = TimeOnly.Parse(Console.ReadLine());
-
-            return new Schedule {CourseId = courseId, TeacherId = teacherId, ClassroomId = classroomId, StartTime = startTime, EndTime = endTime };
-        }
-
+ 
         public static void PrintStudents(List<Student> students)
         {
             foreach (var student in students)
@@ -231,24 +216,6 @@ namespace SchoolSystem.ConsoleUI
             };
         }
 
-        public static Schedule UpdateSchedule()
-        {
-            Console.Write("Enter Schedule ID to update: ");
-            var id = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter new start time: ");
-            var startTime = TimeOnly.Parse(Console.ReadLine());
-
-            Console.Write("Enter new end time: ");
-            var endTime = TimeOnly.Parse(Console.ReadLine());
-
-            return new Schedule
-            {
-                ScheduleId = id,
-                StartTime = startTime,
-                EndTime = endTime,
-            };
-        }
 
         public static void DeleteStudent(StudentService studentService)
         {
@@ -300,20 +267,6 @@ namespace SchoolSystem.ConsoleUI
             if (answer == "y")
             {
                 courseService.DeleteCourse(id);
-            }
-        }
-
-        public static void DeleteSchedule(ScheduleService scheduleService)
-        {
-            Console.Write("EnterSchedule ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var schedule = scheduleService.GetScheduleById(id);
-
-            Console.Write($"Are you sure that you want to delete schedule {schedule.ScheduleId}: {schedule.StartTime}-{schedule.EndTime} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                scheduleService.DeleteSchedule(id);
             }
         }
     }
