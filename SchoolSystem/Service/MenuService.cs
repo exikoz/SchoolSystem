@@ -39,12 +39,12 @@ namespace SchoolSystem.Service
                 {
                     foreach (var enrollment in StudentOverviewInDatabase.Enrollments)
                     {
-                        Console.WriteLine($" {enrollment.Course.Name} ");
+                        Console.WriteLine($"{enrollment.Course.Name} ");
                     }
                 }
                 else
                 {
-                    Console.WriteLine(" - No courses enrolled.");
+                    Console.WriteLine("No courses enrolled.");
                 }
             }
             else
