@@ -313,6 +313,7 @@ namespace SchoolSystem
                         break;
                     // Student ratio between passed and failed 
                     case 6:
+                        MenuService.PrintReport();
                         break;
                     // Admin exits main menu
                     case 0:

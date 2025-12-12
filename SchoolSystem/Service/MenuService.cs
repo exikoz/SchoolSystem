@@ -52,6 +52,44 @@ namespace SchoolSystem.Service
                 Console.WriteLine("Student not found.");
             }
         }
+        public void PrintReport()
+        {
+            Console.Write("Enter start date: ");
+            var start = DateTime.Parse(Console.ReadLine());
+            Console.Write("Enter end date: ");
+            var end = DateTime.Parse(Console.ReadLine());
+            Console.WriteLine();
+            var grades = _context.Grades
+                .Include(g => g.Enrollment)//also include the enrollment
+                .ThenInclude(g => g.Course)//also include the course
+                .Include(g => g.Enrollment)
+                .ThenInclude(e => e.Student)// also include the student
+                .Where(g => g.GradeDate > start && g.GradeDate < end)
+                .ToList();
+
+            var notPassed = 0;
+            var passed = 0;
+
+            foreach (var g in grades)
+            {
+                if (g.GradeValue == "F")
+                {
+                    notPassed++;
+                   
+                }
+                else
+                {
+                    passed++;
+                }
+                Console.WriteLine($"Name: {g.Enrollment.Student.FirstName} {g.Enrollment.Student.FirstName}");
+                Console.WriteLine($"Course: {g.Enrollment.Course.Name}");
+                Console.WriteLine($"Grade: {g.GradeValue}");
+                Console.WriteLine();
+            }
+            Console.WriteLine();
+            Console.WriteLine($"Passed: {passed} - Not passed: {notPassed}");
+            Console.ReadKey();
+        }
         public void ShowActiveCoursesWithStudents()
         {
             DateTime today = DateTime.Today;
