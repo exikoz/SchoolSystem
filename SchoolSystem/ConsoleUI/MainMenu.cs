@@ -18,9 +18,11 @@ namespace SchoolSystem
         public ScheduleService ScheduleService { get; set; }
         public EnrollmentService EnrollmentService { get; set; }
         public GradeService GradeService { get; set; }
+        public MenuService MenuService{ get; set; }
+        
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService, MenuService menuService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
@@ -29,6 +31,7 @@ namespace SchoolSystem
             ScheduleService = scheduleService;
             EnrollmentService = enrollmentService;
             GradeService = gradeService;
+            MenuService = menuService;
         }
 
         public enum CrudAction
@@ -312,16 +315,6 @@ namespace SchoolSystem
                         break;
                     // Register student into a course
                     case 3:
-                        Console.WriteLine("Enroll a student into a Course");
-                        Console.Write("StudentId:");
-                        var inputStudentId = Console.ReadLine();
-                        Console.Write("CourseId:");
-                        var inputCourseId = Console.ReadLine();
-
-                        var enrollment = new Enrollment { CourseId = int.Parse(inputCourseId), StudentId = int.Parse(inputStudentId) };
-                        EnrollmentService.CreateEnrollment(enrollment);
-                        Console.WriteLine($"Enrolled student, enrollment id:{enrollment.EnrollmentId}");
-                        Console.ReadKey();
                         break;
                     // Student overview
                     case 4:
@@ -331,13 +324,7 @@ namespace SchoolSystem
                         break;
                     // Student ratio between passed and failed 
                     case 6:
-                        Console.Write("Enter start date: ");
-                        var startDate = DateTime.Parse(Console.ReadLine());
-                        Console.Write("Enter end date: ");
-                        var endDate = DateTime.Parse(Console.ReadLine());
-                        ReportService.PrintReport(startDate,endDate);
-                        Console.WriteLine("Visa alla studenter med godkänt/ickeGodkänt");
-                        Console.ReadKey();
+                        MenuService.PrintReport();
                         break;
                     // Admin exits main menu
                     case 0:
