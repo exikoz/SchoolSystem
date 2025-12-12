@@ -295,9 +295,13 @@ namespace SchoolSystem
                         break;
                     // Assign course schedule
                     case 2:
+                        MenuService.ShowStudentGradeOverview();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
                         break;
-                    // Register student into a course
+                    // Student ratio between passed and failed 
                     case 3:
+                        MenuService.PrintReport();
                         break;
                     // Student overview
                     case 4:
@@ -310,9 +314,6 @@ namespace SchoolSystem
                         MenuService.ShowActiveCoursesWithStudents();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
-                        break;
-                    // Student ratio between passed and failed 
-                    case 6:
                         break;
                     // Admin exits main menu
                     case 0:
