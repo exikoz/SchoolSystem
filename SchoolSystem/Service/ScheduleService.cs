@@ -9,8 +9,21 @@ using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
+    // Creating a class where user input data will be stored and then used for either Create and Update an entity.
+    public class ScheduleInput
+    {
+        public int ScheduleId { get; set; }
+        public int CourseId { get; set; }
+        public int TeacherId { get; set; }
+        public int ClassroomId { get; set; }
+        public DateTime StartTime { get; set; }
+        public DateTime EndTime { get; set; }
+    }
+
     public class ScheduleService
     {
+        public bool createBool = false;
+        public bool deleteBool = false;
         public readonly SchoolSystemContext _context;
 
         public ScheduleService(SchoolSystemContext context)
@@ -18,47 +31,85 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public Schedule? CreateSchedule(Schedule schedule)
+        public void CreateSchedule()
         {
-            if (!ValidateEntity.ValidateDuplicateSchedule(_context, schedule))
+            var scheduleInput = ValidateEntity.ValidateSchedule(_context, createBool = true, deleteBool);
+            if (scheduleInput == null)
             {
-                return null;
+                return;
             }
+
+            var schedule = new Schedule
+            {
+                CourseId = scheduleInput.CourseId,
+                TeacherId = scheduleInput.TeacherId,
+                ClassroomId = scheduleInput.ClassroomId,
+                StartTime = scheduleInput.StartTime,
+                EndTime = scheduleInput.EndTime
+            };
+
             _context.Schedules.Add(schedule);
             _context.SaveChanges();
-            return schedule;
-
+            Console.WriteLine($"Successfully created schedule with ID: {schedule.ScheduleId}");
         }
+
         public List<Schedule> GetAllSchedules()
         {
             return _context.Schedules.ToList();
         }
+
         public Schedule? GetScheduleById(int id)
         {
             return _context.Schedules.Find(id);
         }
-        public Schedule? UpdateSchedule(int id, Schedule updatedSchedule)
+
+        public void UpdateSchedule()
         {
-            var schedule = _context.Schedules.Find(id);
+            // Validation
+            var scheduleInput = ValidateEntity.ValidateSchedule(_context, createBool, deleteBool);
+            if (scheduleInput == null)
+            {
+                return;
+            }
 
+            // Loading the existing schedule from the database
+            var schedule = _context.Schedules.Find(scheduleInput.ScheduleId);
             if (schedule == null)
-                return null;
+            {
+                Console.WriteLine("Schedule not found.");
+                return;
+            }
 
-            schedule.StartTime = updatedSchedule.StartTime;
-            schedule.EndTime = updatedSchedule.EndTime;
+            schedule.CourseId = scheduleInput.CourseId;
+            schedule.TeacherId = scheduleInput.TeacherId;
+            schedule.ClassroomId = scheduleInput.ClassroomId;
+            schedule.StartTime = scheduleInput.StartTime;
+            schedule.EndTime = scheduleInput.EndTime;
+
             _context.SaveChanges();
-            return schedule;
+            Console.WriteLine($"Successfully updated schedule with ID: {schedule.ScheduleId}");
         }
-        public bool DeleteSchedule(int id)
-        {
-            var schedule = _context.Schedules.Find(id);
 
+        public void DeleteSchedule()
+        {
+            // Validation
+            var scheduleInput = ValidateEntity.ValidateSchedule(_context, createBool, deleteBool = true);
+
+            if (scheduleInput == null)
+            {
+                return;
+            }
+
+            var schedule = _context.Schedules.Find(scheduleInput.ScheduleId);
             if (schedule == null)
-                return false;
+            {
+                Console.WriteLine("Schedule not found.");
+                return;
+            }
 
             _context.Schedules.Remove(schedule);
             _context.SaveChanges();
-            return true;
+            Console.WriteLine($"Successfully deleted schedule with ID: {schedule.ScheduleId}");
         }
     }
 }

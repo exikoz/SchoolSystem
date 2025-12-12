@@ -55,7 +55,7 @@ namespace SchoolSystem.Validation
         }
 
 
-        public static EnrollmentInput? ValidateDuplicateEnrollment(SchoolSystemContext context, bool createBool, bool deleteBool)
+        public static EnrollmentInput? ValidateEnrollment(SchoolSystemContext context, bool createBool, bool deleteBool)
         {
 
             int enrollmentId = 0;
@@ -92,10 +92,10 @@ namespace SchoolSystem.Validation
                 }
             }
 
-            
-            // If delete bool is false then we either Update or Create
 
-            // Check if foreign keys do not exist
+            // If delete bool is false then we check if foreign keys do not exist for either Update or Create options
+
+            // Student FK
             Console.Write("Enter the ID of the student you want to reference: ");
             var studentId = int.Parse(Console.ReadLine());
 
@@ -105,6 +105,7 @@ namespace SchoolSystem.Validation
                 return null;
             }
 
+            // Course FK
             Console.Write("Enter the ID of the course you want to reference: ");
             var courseId = int.Parse(Console.ReadLine());
 
@@ -134,40 +135,108 @@ namespace SchoolSystem.Validation
 
         }
 
-        public static bool ValidateDuplicateSchedule(SchoolSystemContext context, Schedule schedule)
+        public static ScheduleInput? ValidateSchedule(SchoolSystemContext context, bool createBool, bool deleteBool)
         {
-            // Check duplicate ScheduleId
-            if (context.Schedules.Any(s => s.ScheduleId == schedule.ScheduleId))
+            int scheduleId = 0;
+
+            if (!createBool)
             {
-                Console.WriteLine("A schedule with this schedule ID already exists. Returning to the CRUD menu");
-                return false;
+                Console.Write("Enter schedule ID: ");
+
+                // Check user input
+                if (!int.TryParse(Console.ReadLine(), out scheduleId))
+                {
+                    Console.WriteLine("Invalid input, please try again");
+                    return null;
+                }
+
+                // Check if ID doesn't exist for Update & Delete options
+                if (!context.Schedules.Any(s => s.ScheduleId == scheduleId))
+                {
+                    Console.WriteLine("A schedule with this ID does not exist. Returning to the CRUD menu");
+                    return null;
+                }
+
+                // Check if delete CRUD option was selected and return
+                if (deleteBool)
+                {
+                    return new ScheduleInput { ScheduleId = scheduleId };
+                }
+            }
+            else
+            {
+                // Check if schedule ID already exists for Create option
+                if (context.Schedules.Any(s => s.ScheduleId == scheduleId))
+                {
+                    Console.WriteLine("A schedule with this ID already exists. Returning to the CRUD menu");
+                    return null;
+                }
             }
 
-            // Check CourseId exists
-            if (!context.Courses.Any(c => c.CourseId == schedule.CourseId))
+            // If delete bool is false then we check if foreign keys do not exist for either Update or Create options
+
+            // Course FK
+            Console.Write("Enter the ID of the course you want to reference: ");
+            if (!int.TryParse(Console.ReadLine(), out int courseId) ||
+                !context.Courses.Any(c => c.CourseId == courseId))
             {
                 Console.WriteLine("Invalid course ID. No course with this ID exists. Returning to the CRUD menu");
-                return false;
+                return null;
             }
 
-            // Check TeacherId exists
-            if (!context.Teachers.Any(t => t.TeacherId == schedule.TeacherId))
+            // Teacher FK
+            Console.Write("Enter the ID of the teacher you want to reference: ");
+            if (!int.TryParse(Console.ReadLine(), out int teacherId) ||
+                !context.Teachers.Any(t => t.TeacherId == teacherId))
             {
                 Console.WriteLine("Invalid teacher ID. No teacher with this ID exists. Returning to the CRUD menu");
-                return false;
+                return null;
             }
 
-            // Check ClassroomId exists
-            if (!context.Classrooms.Any(c => c.ClassroomId == schedule.ClassroomId))
+            // Classroom FK
+            Console.Write("Enter the ID of the classroom you want to reference: ");
+            if (!int.TryParse(Console.ReadLine(), out int classroomId) ||
+                !context.Classrooms.Any(r => r.ClassroomId == classroomId))
             {
                 Console.WriteLine("Invalid classroom ID. No classroom with this ID exists. Returning to the CRUD menu");
-                return false;
+                return null;
             }
 
-            return true;
+            // Start time
+            Console.Write("Enter Start time (yyyy-MM-dd HH:mm:ss): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime startTime))
+            {
+                Console.WriteLine("Invalid date format. Please enter a valid date.");
+                return null;
+            }
+
+            // End time
+            Console.Write("Enter End time (yyyy-MM-dd HH:mm:ss): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime endTime))
+            {
+                Console.WriteLine("Invalid date format. Please enter a valid date.");
+                return null;
+            }
+
+            // Ensures that end time is after start time
+            if (endTime <= startTime)
+            {
+                Console.WriteLine("End time must be after start time.");
+                return null;
+            }
+
+            return new ScheduleInput
+            {
+                ScheduleId = scheduleId,
+                CourseId = courseId,
+                TeacherId = teacherId,
+                ClassroomId = classroomId,
+                StartTime = startTime,
+                EndTime = endTime
+            };
         }
 
-        public static GradeInput? ValidateDuplicateGrade(SchoolSystemContext context, bool createBool, bool deleteBool)
+        public static GradeInput? ValidateGrade(SchoolSystemContext context, bool createBool, bool deleteBool)
         {
 
             int gradeId = 0;
@@ -204,9 +273,9 @@ namespace SchoolSystem.Validation
                 }
             }
 
-            // If delete bool is false then we either Update or Create
+            // If delete bool is false then we check if foreign keys do not exist for either Update or Create options
 
-            // Check if foreign keys do not exist
+            // Enrollment FK
             Console.Write("Enter the ID of the enrollment you want to reference: ");
             var enrollmentId = int.Parse(Console.ReadLine());
 
@@ -216,6 +285,7 @@ namespace SchoolSystem.Validation
                 return null;
             }
 
+            // Teacher FK
             Console.Write("Enter the ID of the teacher you want to reference: ");
             var teacherId = int.Parse(Console.ReadLine());
 
@@ -235,6 +305,7 @@ namespace SchoolSystem.Validation
                 return null;
             }
 
+            // User input Grade validation
             Console.Write("Enter Grade value A–F, optionally + or -, except for F: ");
             string gradeValue = Console.ReadLine()?.Trim().ToUpper();
 

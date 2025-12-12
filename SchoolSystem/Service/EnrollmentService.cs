@@ -9,6 +9,7 @@ using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
+    // Creating a class where user input data will be stored and then used for either Create and Update an entity.
     public class EnrollmentInput
     {
         public int EnrollmentId { get; set; }
@@ -27,24 +28,22 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public bool CreateEnrollment()
+        public void CreateEnrollment()
         {
-            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool = true, deleteBool);
+            var enrollmentInput = ValidateEntity.ValidateEnrollment(_context, createBool = true, deleteBool);
             if (enrollmentInput == null) 
             {
-                return false;
+                return;
             }
             var enrollment = new Enrollment
             {
-                // EnrollmentId left as 0 → EF generates it
                 StudentId = enrollmentInput.StudentId,
                 CourseId = enrollmentInput.CourseId,
                 EnrollmentDate = enrollmentInput.EnrollmentDate
             };
             _context.Enrollments.Add(enrollment);
             _context.SaveChanges();
-            Console.WriteLine($"Created enrollment with ID: {enrollment.EnrollmentId}");
-            return true;
+            Console.WriteLine($"Successfully created enrollment with ID: {enrollment.EnrollmentId}");
         }
         public List<Enrollment> GetAllEnrollments()
         {
@@ -54,13 +53,13 @@ namespace SchoolSystem.Service
         {
             return _context.Enrollments.Find(id);
         }
-        public bool UpdateEnrollment()
+        public void UpdateEnrollment()
         {
             // Validation
-            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool, deleteBool);
+            var enrollmentInput = ValidateEntity.ValidateEnrollment(_context, createBool, deleteBool);
             if (enrollmentInput == null)
             {
-                return false;
+                return;
             }
 
             // Loading the existing enrollment from the database
@@ -71,24 +70,22 @@ namespace SchoolSystem.Service
             enrollment.StudentId = enrollmentInput.StudentId;
             enrollment.EnrollmentDate = enrollmentInput.EnrollmentDate;
             _context.SaveChanges();
-            Console.WriteLine($"Updated enrollment with ID: {enrollment.EnrollmentId}");
-            return true;
+            Console.WriteLine($"Successfully updated enrollment with ID: {enrollment.EnrollmentId}");
         }
-        public bool DeleteEnrollment()
+        public void DeleteEnrollment()
         {
-            var enrollmentInput = ValidateEntity.ValidateDuplicateEnrollment(_context, createBool, deleteBool = true);
+            var enrollmentInput = ValidateEntity.ValidateEnrollment(_context, createBool, deleteBool = true);
 
             if (enrollmentInput == null)
             {
-                return false;
+                return;
             }
 
             var enrollment = _context.Enrollments.Find(enrollmentInput.EnrollmentId);
 
             _context.Enrollments.Remove(enrollment);
             _context.SaveChanges();
-            Console.WriteLine($"Deleted enrollment with ID: {enrollment.EnrollmentId}");
-            return true;
+            Console.WriteLine($"Successfully deleted enrollment with ID: {enrollment.EnrollmentId}");
         }
     }
 }
