@@ -1,13 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace SchoolSystem.Models
 {
-    [Index(nameof(Email), IsUnique = true)]
-    [Index(nameof(PersonalNumber), IsUnique = true)]
     public class Student
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int StudentId { get; set; }
 
         [Required]

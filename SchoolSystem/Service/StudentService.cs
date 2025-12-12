@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Data;
 using SchoolSystem.Models;
-
+using SchoolSystem.Validation;
 
 namespace SchoolSystem.Service
 {
@@ -15,8 +15,12 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public Student CreateStudent(Student student)
+        public Student? CreateStudent(Student student)
         {
+            if (!ValidateEntity.ValidateDuplicateStudent(_context, student))
+            {
+                return null;
+            }
             _context.Students.Add(student);
             _context.SaveChanges();
             return student;
