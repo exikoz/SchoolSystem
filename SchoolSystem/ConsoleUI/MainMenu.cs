@@ -16,15 +16,19 @@ namespace SchoolSystem
         public TeacherService TeacherService { get; set; }
         public CourseService CourseService { get; set; }
         public ScheduleService ScheduleService { get; set; }
+        public EnrollmentService EnrollmentService { get; set; }
+        public GradeService GradeService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService)
+        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
             TeacherService = teacherService;
             CourseService = courseService;
             ScheduleService = scheduleService;
+            EnrollmentService = enrollmentService;
+            GradeService = gradeService;
         }
 
         public enum CrudAction
@@ -41,7 +45,9 @@ namespace SchoolSystem
             Classroom = 2,
             Teacher = 3,
             Course = 4,
-            Schedule = 5
+            Schedule = 5,
+            Enrollment = 6,
+            Grade = 7
         };
 
         public void UseMainMenu()
@@ -73,7 +79,9 @@ namespace SchoolSystem
                 "Classroom",
                 "Teacher",
                 "Course",
-                "Schedule"
+                "Schedule (Requires Course, Teacher, Classroom)",
+                "Enrollment (Requires Course, Student)",
+                "Grade (Requires Enrollment, Teacher)"
             };
 
 
@@ -154,6 +162,22 @@ namespace SchoolSystem
                                         Console.WriteLine($"Created schedule with ID: {schedule.ScheduleId}");
 
                                     }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        var enrollment = EnrollmentService.CreateEnrollment();
+                                        if (enrollment == null)
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        var grade = GradeService.CreateGrade();
+                                        if (grade == null)
+                                        {
+                                            break;
+                                        }
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
@@ -185,6 +209,17 @@ namespace SchoolSystem
                                         var schedule = ScheduleService.GetAllSchedules();
                                         MenuHelper.PrintSchedule(schedule);
 
+                                    }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        var enrollment = EnrollmentService.GetAllEnrollments();
+                                        MenuHelper.PrintEnrollment(enrollment);
+
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        var grade = GradeService.GetAllGrades();
+                                        MenuHelper.PrintGrade(grade);
                                     }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
@@ -222,10 +257,19 @@ namespace SchoolSystem
                                         ScheduleService.UpdateSchedule(schedule.ScheduleId, schedule);
 
                                     }
-                                    Console.WriteLine($"Updating {entity}...");
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        EnrollmentService.UpdateEnrollment();
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        GradeService.UpdateGrade();
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadKey();
                                     break;
+
+
 
                                 case CrudAction.Delete:
                                     if (entity == EntityType.Student)
@@ -244,7 +288,18 @@ namespace SchoolSystem
                                     {
                                         MenuHelper.DeleteCourse(CourseService);
                                     }
-                                    Console.WriteLine($"Deleting {entity}...");
+                                    else if (entity == EntityType.Schedule)
+                                    {
+                                        MenuHelper.DeleteSchedule(ScheduleService);
+                                    }
+                                    else if (entity == EntityType.Enrollment)
+                                    {
+                                        EnrollmentService.DeleteEnrollment();
+                                    }
+                                    else if (entity == EntityType.Grade)
+                                    {
+                                        GradeService.DeleteGrade();
+                                    }
                                     Console.WriteLine("Press Enter to continue\n>");
                                     Console.ReadLine();
                                     break;

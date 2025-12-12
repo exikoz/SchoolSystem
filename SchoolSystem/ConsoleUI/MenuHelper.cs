@@ -1,10 +1,12 @@
-﻿using SchoolSystem.Models;
-using SchoolSystem.Service;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Models;
+using SchoolSystem.Service;
+using SchoolSystem.Validation;
 
 namespace SchoolSystem.ConsoleUI
 {
@@ -118,6 +120,24 @@ namespace SchoolSystem.ConsoleUI
             foreach (var schedule in schedules)
             {
                 Console.WriteLine($"Id: {schedule.ScheduleId} \nTime Interval: {schedule.StartTime} - {schedule.EndTime}");
+                Console.WriteLine();
+            }
+        }
+
+        public static void PrintEnrollment(List<Enrollment> enrollments)
+        {
+            foreach (var enrollment in enrollments)
+            {
+                Console.WriteLine($"Id: {enrollment.EnrollmentId} \nEnrollment date: {enrollment.EnrollmentDate}");
+                Console.WriteLine();
+            }
+        }
+
+        public static void PrintGrade(List<Grade> grades)
+        {
+            foreach (var grade in grades)
+            {
+                Console.WriteLine($"Id: {grade.GradeId} \nGrade date: {grade.GradeDate}");
                 Console.WriteLine();
             }
         }
