@@ -9,14 +9,22 @@ namespace SchoolSystem
     {
         static void Main(string[] args)
         {
-            // Test att vi kan skapa contexten
             using (var context = new SchoolSystemContext())
             {
-                // Detta skapar databasen om den inte finns (när migrationer är klara)
+                // creates db if it's not there (after migrating)
                 // context.Database.EnsureCreated(); 
-                Console.WriteLine("Context skapad och namespaces fungerar!");
 
-                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(), new EnrollmentService(), new GradeService(), new MenuService(context));
+                var menu = new MainMenu(
+                    new StudentService(context),
+                    new ClassroomService(context),
+                    new TeacherService(context),
+                    new CourseService(context),
+                    new ScheduleService(),
+                    new EnrollmentService(),
+                    new GradeService(),
+                    new MenuService(context),
+                    new ReportService(context));
+
                 menu.UseMainMenu();
 
             }

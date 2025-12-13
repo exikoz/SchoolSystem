@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SchoolSystem.Data;
 
@@ -11,9 +12,11 @@ using SchoolSystem.Data;
 namespace SchoolSystem.Migrations
 {
     [DbContext(typeof(SchoolSystemContext))]
-    partial class SchoolSystemContextModelSnapshot : ModelSnapshot
+    [Migration("20251213103052_AddReportFeature")]
+    partial class AddReportFeature
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder

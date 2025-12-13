@@ -20,9 +20,19 @@ namespace SchoolSystem
         public EnrollmentService EnrollmentService { get; set; }
         public GradeService GradeService { get; set; }
         public MenuService MenuService { get; set; }
+        public ReportService ReportService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService, MenuService menuService)
+        public MainMenu(
+            StudentService studentService, 
+            ClassroomService classroomService, 
+            TeacherService teacherService, 
+            CourseService courseService, 
+            ScheduleService scheduleService, 
+            EnrollmentService enrollmentService, 
+            GradeService gradeService, 
+            MenuService menuService,
+            ReportService reportService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
@@ -32,6 +42,7 @@ namespace SchoolSystem
             EnrollmentService = enrollmentService;
             GradeService = gradeService;
             MenuService = menuService;
+            ReportService = reportService;
         }
 
         public enum CrudAction
@@ -64,7 +75,9 @@ namespace SchoolSystem
                 "List of active courses and participating students",
                 "Student ratio between passed and failed",
                 "Seed the database",
-                "Delete data from database"
+                "Delete data from database",
+                "[SQL View] Student Grade Report",
+                "[SQL SP] Grade Statistics Distribution"
             };
 
             // Crud menu options 
@@ -328,6 +341,17 @@ namespace SchoolSystem
                     //Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
                     case 7:
                         DeleteDatabaseData.DeleteAllData();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    case 8:
+                        ReportService.ShowGradeViewReport(); // Anropar din SQL View-metod
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+
+                    case 9:
+                        ReportService.ShowGradeStatisticsProc(); // Anropar din Stored Procedure-metod
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;

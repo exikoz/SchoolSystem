@@ -179,7 +179,7 @@ namespace SchoolSystem
             }
 
             //Check if menu is too big
-            if (menuOptions.Count > 9)
+            if (menuOptions.Count > 11)
             {
                 Console.WriteLine("\nMaximum allowed menu options are 8, please make it shorter\n");
                 return false;
