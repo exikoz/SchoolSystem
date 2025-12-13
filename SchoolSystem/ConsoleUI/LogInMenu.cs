@@ -27,7 +27,7 @@ namespace SchoolSystem.ConsoleUI
                     case 1:
                         using (var context = new SchoolSystemContext())
                         {
-                            var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(), new EnrollmentService(), new GradeService(), new MenuService(context));
+                            var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(), new EnrollmentService(), new GradeService(), new MenuService(context), new ReportService(context));
                             menu.UseMainMenu();
                         }
                         break;

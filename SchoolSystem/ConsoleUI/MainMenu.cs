@@ -20,9 +20,19 @@ namespace SchoolSystem
         public EnrollmentService EnrollmentService { get; set; }
         public GradeService GradeService { get; set; }
         public MenuService MenuService { get; set; }
+        public ReportService ReportService { get; set; }
 
 
-        public MainMenu(StudentService studentService, ClassroomService classroomService, TeacherService teacherService, CourseService courseService, ScheduleService scheduleService, EnrollmentService enrollmentService, GradeService gradeService, MenuService menuService)
+        public MainMenu(
+            StudentService studentService, 
+            ClassroomService classroomService, 
+            TeacherService teacherService, 
+            CourseService courseService, 
+            ScheduleService scheduleService, 
+            EnrollmentService enrollmentService, 
+            GradeService gradeService, 
+            MenuService menuService,
+            ReportService reportService)
         {
             StudentService = studentService;
             ClassroomService = classroomService;
@@ -32,6 +42,7 @@ namespace SchoolSystem
             EnrollmentService = enrollmentService;
             GradeService = gradeService;
             MenuService = menuService;
+            ReportService = reportService;
         }
 
         public enum CrudAction
@@ -64,7 +75,9 @@ namespace SchoolSystem
                 "List of active courses and participating students",
                 "Student ratio between passed and failed",
                 "Seed the database",
-                "Delete data from database"
+                "Delete data from database",
+                "[SQL View] Student Grade Report",
+                "[SQL SP] Grade Statistics Distribution"
             };
 
             // Crud menu options 
@@ -116,6 +129,7 @@ namespace SchoolSystem
 
                             switch (action)
                             {
+                                // Create
                                 case CrudAction.Create:
                                     // Create Method here. Input - Entity
 
@@ -155,6 +169,7 @@ namespace SchoolSystem
                                     Console.ReadKey();
                                     break;
 
+                                // Read
                                 case CrudAction.Read:
 
                                     if (entity == EntityType.Student)
@@ -200,7 +215,7 @@ namespace SchoolSystem
 
 
 
-                                // Update Method here. Input - Entity
+                                // Update 
                                 case CrudAction.Update:
 
                                     if (entity == EntityType.Student)
@@ -240,7 +255,7 @@ namespace SchoolSystem
                                     break;
 
 
-
+                                // Delete
                                 case CrudAction.Delete:
                                     if (entity == EntityType.Student)
                                     {
@@ -248,15 +263,15 @@ namespace SchoolSystem
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
-                                        //ClassroomService.DeleteClassroom();
+                                        ClassroomService.DeleteClassroom();
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
-                                        //TeacherService.DeleteTeacher();
+                                        TeacherService.DeleteTeacher();
                                     }
                                     else if (entity == EntityType.Course)
                                     {
-                                        //CourseService.DeleteCourse();
+                                        CourseService.DeleteCourse();
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
@@ -301,15 +316,27 @@ namespace SchoolSystem
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    //Seeds data into the database.
+                    // Seeds data into the database.
                     case 6:
                         DataSeeder.Seed();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    //Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
+                    // Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
                     case 7:
                         DeleteDatabaseData.DeleteAllData();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    // Student Grade Report
+                    case 8:
+                        ReportService.ShowGradeViewReport();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    // Grade Statistics Distribution
+                    case 9:
+                        ReportService.ShowGradeStatisticsProc();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
