@@ -30,6 +30,7 @@ namespace SchoolSystem.Data
         public DbSet<Enrollment> Enrollments { get; set; }
         public DbSet<Grade> Grades { get; set; }
         public DbSet<Schedule> Schedules { get; set; }
+        public DbSet<StudentGradeView> StudentGradeViews { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -39,7 +40,14 @@ namespace SchoolSystem.Data
             modelBuilder.Entity<Student>().HasIndex(s => s.Email).IsUnique();
             modelBuilder.Entity<Student>().HasIndex(s => s.PersonalNumber).IsUnique();
             modelBuilder.Entity<Teacher>().HasIndex(t => t.Email).IsUnique();
+
+            modelBuilder.Entity<StudentGradeView>(entity =>
+            {
+                entity.HasNoKey();
+                entity.ToView("View_StudentGradeDetails");
+            });
         }
+
 
     }
 
