@@ -22,6 +22,8 @@ namespace SchoolSystem.Models
         [EmailAddress]
         public string Email { get; set; } = string.Empty;
 
+        public DateTime CreatedDate { get; set; } = DateTime.Now;
+
         // Navigation Properties
         public virtual ICollection<Schedule> Schedules { get; set; } = new List<Schedule>();
         public virtual ICollection<Grade> Grades { get; set; } = new List<Grade>();
