@@ -22,16 +22,18 @@ namespace SchoolSystem.Service
 
         public void ShowStudentOverview()
         {
-            Console.WriteLine("Enter student id:");
-            int WhatStudentId = int.Parse(Console.ReadLine());
+            Console.WriteLine("Enter Student id:");
+            int studentId = int.Parse(Console.ReadLine());
+            Console.Clear();
             // Gets enrollment, courses and student
 
-            var StudentOverviewInDatabase = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).FirstOrDefault(s => s.StudentId == WhatStudentId);
+            var StudentOverviewInDatabase = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Course).FirstOrDefault(s => s.StudentId == studentId);
 
             if (StudentOverviewInDatabase != null)
             {
-                Console.WriteLine("Student overview:");
+                Console.WriteLine("Student Overview:\n");
                 Console.WriteLine($"Name: {StudentOverviewInDatabase.FirstName} {StudentOverviewInDatabase.LastName}");
+                Console.WriteLine($"Student ID: {studentId}");
                 Console.WriteLine($"SSN: {StudentOverviewInDatabase.PersonalNumber}");
                 Console.WriteLine($"Email: {StudentOverviewInDatabase.Email}");
                 Console.WriteLine("Courses:");
@@ -125,39 +127,43 @@ namespace SchoolSystem.Service
         }
         public void ShowStudentGradeOverview()
         {
-            Console.Write("Enter student ID:");
+            Console.Write("Enter student ID: ");
             int studentId = int.Parse(Console.ReadLine());
+            Console.Clear();
 
-            var studentGradeOverview = _context.Students.Include(s => s.Enrollments).ThenInclude(e => e.Grades).ThenInclude(g => g.Teacher)
-                .Include(s => s.Enrollments).ThenInclude(e => e.Course).ToList();
+            var student = _context.Students
+                .Include(s => s.Enrollments)
+                    .ThenInclude(e => e.Grades)
+                        .ThenInclude(g => g.Teacher)
+                .Include(s => s.Enrollments)
+                    .ThenInclude(e => e.Course)
+                .FirstOrDefault(s => s.StudentId == studentId);
 
-            if (!studentGradeOverview.Any())
+            if (student == null)
             {
                 Console.WriteLine("This student does not exist in the database.");
                 return;
             }
 
-            foreach (var student in studentGradeOverview)
-            {
-                Console.WriteLine($"Student {student.FirstName}, {student.LastName}, {student.Email} ");
-                Console.WriteLine("Courses and grades:");
-                //SelectMany takes grades from all courses which the student is enrolled in
-                var allGrades = student.Enrollments.SelectMany(e => e.Grades).ToList();
+            Console.WriteLine($"Student: {student.FirstName} {student.LastName}, {student.Email}");
+            Console.WriteLine("Courses and grades:\n");
 
-                if (!allGrades.Any())
-                {
-                    Console.WriteLine("This student does not have any grades yet.");
-                }
-                else
-                {
-                    foreach (var grade in allGrades)
-                    {
-                        Console.WriteLine($"Course: {grade.Enrollment.Course.Name}");
-                        Console.WriteLine($"Grade: {grade.GradeValue}");
-                        Console.WriteLine($"Teacher: {grade.Teacher.FirstName} {grade.Teacher.LastName}");
-                        Console.WriteLine($"Date: {grade.GradeDate}");
-                    }
-                }
+            var allGrades = student.Enrollments.SelectMany(e => e.Grades).ToList();
+
+            if (!allGrades.Any())
+            {
+                Console.WriteLine("This student does not have any grades yet.");
+                return;
+            }
+
+            foreach (var grade in allGrades)
+            {
+                Console.WriteLine($"StudentId: {studentId}");
+                Console.WriteLine($"Course: {grade.Enrollment.Course.Name}");
+                Console.WriteLine($"Grade: {grade.GradeValue}");
+                Console.WriteLine($"Grade issued by: {grade.Teacher.FirstName} {grade.Teacher.LastName}");
+                Console.WriteLine($"Grade issued at: {grade.GradeDate}");
+                Console.WriteLine();
             }
         }
     }
