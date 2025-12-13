@@ -53,21 +53,21 @@ namespace SchoolSystem.Data
 
                 // Courses
                 context.Courses.AddRange(
-                    new Course { Name = "Mathematics" },
-                    new Course { Name = "Programming Basics" },
-                    new Course { Name = "English Literature" },
-                    new Course { Name = "Physics Fundamentals" },
-                    new Course { Name = "Database Design" }
+                    new Course { Name = "Mathematics", StartDate = new DateTime(2025, 1, 13), EndDate = new DateTime(2025, 3, 7) },
+                    new Course { Name = "Programming Basics", StartDate = new DateTime(2025, 2, 3), EndDate = new DateTime(2025, 4, 25) },
+                    new Course { Name = "English Literature", StartDate = new DateTime(2025, 3, 10), EndDate = new DateTime(2025, 5, 30) },
+                    new Course { Name = "Physics Fundamentals", StartDate = new DateTime(2025, 4, 7), EndDate = new DateTime(2025, 6, 27) },
+                    new Course { Name = "Database Design", StartDate = new DateTime(2025, 5, 5), EndDate = new DateTime(2025, 7, 25) }
                 );
                 context.SaveChanges();
 
                 // Classrooms
                 context.Classrooms.AddRange(
-                    new Classroom { Name = "Zoom 1" },
-                    new Classroom { Name = "Zoom 2" },
-                    new Classroom { Name = "Zoom 3" },
-                    new Classroom { Name = "Zoom 4" },
-                    new Classroom { Name = "Zoom 5" }
+                    new Classroom { Name = "Zoom 1", Capacity = 30 },
+                    new Classroom { Name = "Zoom 2", Capacity = 25 },
+                    new Classroom { Name = "Zoom 3", Capacity = 20 },
+                    new Classroom { Name = "Zoom 4", Capacity = 35 },
+                    new Classroom { Name = "Zoom 5", Capacity = 40 }
                 );
                 context.SaveChanges();
 
