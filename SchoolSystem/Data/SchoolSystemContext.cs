@@ -40,8 +40,5 @@ namespace SchoolSystem.Data
             modelBuilder.Entity<Student>().HasIndex(s => s.PersonalNumber).IsUnique();
             modelBuilder.Entity<Teacher>().HasIndex(t => t.Email).IsUnique();
         }
-
     }
-
-
 }

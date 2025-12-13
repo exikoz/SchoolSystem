@@ -122,39 +122,22 @@ namespace SchoolSystem
                                     if (entity == EntityType.Student)
                                     {
                                         var student = MenuHelper.CreateStudent();
-                                        if (StudentService.CreateStudent(student) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created student with ID: {student.StudentId}");
+                                        StudentService.CreateStudent(student);
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
                                         var classroom = MenuHelper.CreateClassroom();
-                                        if (ClassroomService.CreateClasroom(classroom) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created classroom with ID: {classroom.ClassroomId}");
+                                        ClassroomService.CreateClassroom(classroom);
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
                                         var teacher = MenuHelper.CreateTeacher();
-                                        if (TeacherService.CreateTeacher(teacher) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created teacher with ID: {teacher.TeacherId}");
+                                        TeacherService.CreateTeacher(teacher);
                                     }
                                     else if (entity == EntityType.Course)
                                     {
                                         var course = MenuHelper.CreateCourse();
-                                        if (CourseService.CreateCourse(course) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created course with ID: {course.CourseId}");
-                                        
+                                        CourseService.CreateCourse(course);
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
@@ -217,9 +200,8 @@ namespace SchoolSystem
 
 
 
-
+                                // Update Method here. Input - Entity
                                 case CrudAction.Update:
-                                    // Update Method here. Input - Entity
 
                                     if (entity == EntityType.Student)
                                     {
@@ -262,19 +244,19 @@ namespace SchoolSystem
                                 case CrudAction.Delete:
                                     if (entity == EntityType.Student)
                                     {
-                                        MenuHelper.DeleteStudent(StudentService);
+                                        StudentService.DeleteStudent();
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
-                                        MenuHelper.DeleteClassroom(ClassroomService);
+                                        //ClassroomService.DeleteClassroom();
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
-                                        MenuHelper.DeleteTeacher(TeacherService);
+                                        //TeacherService.DeleteTeacher();
                                     }
                                     else if (entity == EntityType.Course)
                                     {
-                                        MenuHelper.DeleteCourse(CourseService);
+                                        //CourseService.DeleteCourse();
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {

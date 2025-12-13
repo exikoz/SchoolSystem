@@ -138,19 +138,11 @@ namespace SchoolSystem.ConsoleUI
             Console.Write("Enter new last name: ");
             var lastName = Console.ReadLine();
 
-            Console.Write("Enter new personal number: ");
-            var personalNumber = Console.ReadLine();
-
-            Console.Write("Enter new email: ");
-            var email = Console.ReadLine();
-
             return new Student
             {
                 StudentId = id,   
                 FirstName = firstName,
                 LastName = lastName,
-                PersonalNumber = personalNumber,
-                Email = email
             };
         }
         public static Classroom UpdateClassroom()
@@ -158,16 +150,12 @@ namespace SchoolSystem.ConsoleUI
             Console.Write("Enter Classroom ID to update: ");
             var id = int.Parse(Console.ReadLine());
 
-            Console.Write("Enter new classroom name: ");
-            var name = Console.ReadLine();
-
             Console.Write("Enter new capacity: ");
             var capacity = int.Parse(Console.ReadLine());
 
             return new Classroom
             {
                 ClassroomId = id,
-                Name = name,
                 Capacity = capacity
             };
         }
@@ -182,24 +170,17 @@ namespace SchoolSystem.ConsoleUI
             Console.Write("Enter new last name: ");
             var lastName = Console.ReadLine();
 
-            Console.Write("Enter new email: ");
-            var email = Console.ReadLine();
-
             return new Teacher
             {
                 TeacherId = id,
                 FirstName = firstName,
                 LastName = lastName,
-                Email = email
             };
         }
         public static Course UpdateCourse()
         {
             Console.Write("Enter Course ID to update: ");
             var id = int.Parse(Console.ReadLine());
-
-            Console.Write("Enter new course name: ");
-            var name = Console.ReadLine();
 
             Console.Write("Enter new start date: ");
             var startDate = DateTime.Parse(Console.ReadLine());
@@ -210,64 +191,9 @@ namespace SchoolSystem.ConsoleUI
             return new Course
             {
                 CourseId = id,
-                Name = name,
                 StartDate = startDate,
                 EndDate = endDate
             };
-        }
-
-
-        public static void DeleteStudent(StudentService studentService)
-        {
-            Console.Write("Enter Student ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var student = studentService.GetStudentById(id);
-
-            Console.Write($"Are you sure that you want to delete {student.FirstName} {student.LastName} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                studentService.DeleteStudent(id);
-            }
-        }
-        public static void DeleteTeacher(TeacherService teacherService)
-        {
-            Console.Write("Enter Teacher ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var teacher = teacherService.GetTeacherById(id);
-
-            Console.Write($"Are you sure that you want to delete {teacher.FirstName} {teacher.LastName} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                teacherService.DeleteTeacher(id);
-            }
-        }
-        public static void DeleteClassroom(ClassroomService classroomService)
-        {
-            Console.Write("Enter Classroom ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var classroom = classroomService.GetClassroomById(id);
-
-            Console.Write($"Are you sure that you want to delete this classroom: {classroom.Name} Capacity:{classroom.Capacity} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                classroomService.DeleteClassroom(id);
-            }
-        }
-        public static void DeleteCourse(CourseService courseService)
-        {
-            Console.Write("Enter Course ID to delete: ");
-            var id = int.Parse(Console.ReadLine());
-            var course = courseService.GetCourseById(id);
-
-            Console.Write($"Are you sure that you want to delete {course.Name} startDate{course.StartDate:d} ? (y/n)");
-            var answer = Console.ReadLine();
-            if (answer == "y")
-            {
-                courseService.DeleteCourse(id);
-            }
         }
     }
 }
