@@ -129,45 +129,29 @@ namespace SchoolSystem
 
                             switch (action)
                             {
+                                // Create
                                 case CrudAction.Create:
                                     // Create Method here. Input - Entity
 
                                     if (entity == EntityType.Student)
                                     {
                                         var student = MenuHelper.CreateStudent();
-                                        if (StudentService.CreateStudent(student) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created student with ID: {student.StudentId}");
+                                        StudentService.CreateStudent(student);
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
                                         var classroom = MenuHelper.CreateClassroom();
-                                        if (ClassroomService.CreateClasroom(classroom) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created classroom with ID: {classroom.ClassroomId}");
+                                        ClassroomService.CreateClassroom(classroom);
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
                                         var teacher = MenuHelper.CreateTeacher();
-                                        if (TeacherService.CreateTeacher(teacher) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created teacher with ID: {teacher.TeacherId}");
+                                        TeacherService.CreateTeacher(teacher);
                                     }
                                     else if (entity == EntityType.Course)
                                     {
                                         var course = MenuHelper.CreateCourse();
-                                        if (CourseService.CreateCourse(course) == null)
-                                        {
-                                            break;
-                                        }
-                                        Console.WriteLine($"Created course with ID: {course.CourseId}");
-                                        
+                                        CourseService.CreateCourse(course);
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
@@ -185,6 +169,7 @@ namespace SchoolSystem
                                     Console.ReadKey();
                                     break;
 
+                                // Read
                                 case CrudAction.Read:
 
                                     if (entity == EntityType.Student)
@@ -230,9 +215,8 @@ namespace SchoolSystem
 
 
 
-
+                                // Update 
                                 case CrudAction.Update:
-                                    // Update Method here. Input - Entity
 
                                     if (entity == EntityType.Student)
                                     {
@@ -271,23 +255,23 @@ namespace SchoolSystem
                                     break;
 
 
-
+                                // Delete
                                 case CrudAction.Delete:
                                     if (entity == EntityType.Student)
                                     {
-                                        MenuHelper.DeleteStudent(StudentService);
+                                        StudentService.DeleteStudent();
                                     }
                                     else if (entity == EntityType.Classroom)
                                     {
-                                        MenuHelper.DeleteClassroom(ClassroomService);
+                                        ClassroomService.DeleteClassroom();
                                     }
                                     else if (entity == EntityType.Teacher)
                                     {
-                                        MenuHelper.DeleteTeacher(TeacherService);
+                                        TeacherService.DeleteTeacher();
                                     }
                                     else if (entity == EntityType.Course)
                                     {
-                                        MenuHelper.DeleteCourse(CourseService);
+                                        CourseService.DeleteCourse();
                                     }
                                     else if (entity == EntityType.Schedule)
                                     {
@@ -332,26 +316,27 @@ namespace SchoolSystem
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    //Seeds data into the database.
+                    // Seeds data into the database.
                     case 6:
                         DataSeeder.Seed();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    //Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
+                    // Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
                     case 7:
                         DeleteDatabaseData.DeleteAllData();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
+                    // Student Grade Report
                     case 8:
-                        ReportService.ShowGradeViewReport(); // Anropar din SQL View-metod
+                        ReportService.ShowGradeViewReport();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-
+                    // Grade Statistics Distribution
                     case 9:
-                        ReportService.ShowGradeStatisticsProc(); // Anropar din Stored Procedure-metod
+                        ReportService.ShowGradeStatisticsProc();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;

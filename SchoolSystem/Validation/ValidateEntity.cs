@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
@@ -9,26 +10,44 @@ using SchoolSystem.Data;
 using SchoolSystem.Models;
 using SchoolSystem.Service;
 
+
 namespace SchoolSystem.Validation
 {
     public class ValidateEntity
     {
         public static bool ValidateDuplicateStudent(SchoolSystemContext context, Student student)
         {
-            // Check duplicate StudentId
+            // Check duplicate StudentId, Personal number and Email for Create CRUD option
             if (context.Students.Any(s => s.StudentId == student.StudentId))
             {
-                Console.WriteLine("A student with this student ID already exists. Returning to the CRUD menu");
+                Console.WriteLine("\nA student with this student ID already exists. Returning to the CRUD menu");
+                return false;
+            }
+            if (context.Students.Any(s => s.PersonalNumber == student.PersonalNumber))
+            {
+                Console.WriteLine("\nA student with this SSN already exists. Returning to the CRUD menu");
+                return false;
+            }
+            if (context.Students.Any(s => s.Email == student.Email))
+            {
+                Console.WriteLine("\nA student with this email already exists. Returning to the CRUD menu");
                 return false;
             }
             return true;
         }
+
         public static bool ValidateDuplicateTeacher(SchoolSystemContext context, Teacher teacher)
         {
             // Check duplicate TeacherId
             if (context.Teachers.Any(t => t.TeacherId == teacher.TeacherId))
             {
-                Console.WriteLine("A teacher with this teacher ID already exists. Returning to the CRUD menu");
+                Console.WriteLine("\nA teacher with this teacher ID already exists. Returning to the CRUD menu");
+                return false;
+            }
+            // Check duplicate Email
+            if (context.Teachers.Any(t => t.Email == teacher.Email))
+            {
+                Console.WriteLine("\nA teacher with this email already exists. Returning to the CRUD menu");
                 return false;
             }
             return true;
@@ -38,7 +57,13 @@ namespace SchoolSystem.Validation
             // Check duplicate ClassroomId
             if (context.Classrooms.Any(s => s.ClassroomId == classroom.ClassroomId))
             {
-                Console.WriteLine("A classroom with this classroom ID already exists. Returning to the CRUD menu");
+                Console.WriteLine("\nA classroom with this classroom ID already exists. Returning to the CRUD menu");
+                return false;
+            }
+            // Check duplicate Name
+            if (context.Classrooms.Any(s => s.Name == classroom.Name))
+            {
+                Console.WriteLine("\nA classroom with this name already exists. Returning to the CRUD menu");
                 return false;
             }
             return true;
@@ -48,7 +73,13 @@ namespace SchoolSystem.Validation
             // Check duplicate CourseId
             if (context.Courses.Any(s => s.CourseId == course.CourseId))
             {
-                Console.WriteLine("A course with this course ID already exists. Returning to the CRUD menu");
+                Console.WriteLine("\nA course with this course ID already exists. Returning to the CRUD menu");
+                return false;
+            }
+            // Check duplicate Name
+            if (context.Courses.Any(s => s.CourseId == course.CourseId))
+            {
+                Console.WriteLine("\nA course with this name already exists. Returning to the CRUD menu");
                 return false;
             }
             return true;

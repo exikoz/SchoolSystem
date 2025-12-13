@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolSystem.Data;
+using SchoolSystem.Service;
 
 namespace SchoolSystem.ConsoleUI
 {
@@ -23,7 +25,11 @@ namespace SchoolSystem.ConsoleUI
                 {
                     // Admin logs in
                     case 1:
-                        //MainMenu.UseMainMenu();
+                        using (var context = new SchoolSystemContext())
+                        {
+                            var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(), new EnrollmentService(), new GradeService(), new MenuService(context), new ReportService(context));
+                            menu.UseMainMenu();
+                        }
                         break;
 
                     // Admin exits school system

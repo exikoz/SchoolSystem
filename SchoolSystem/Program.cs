@@ -2,6 +2,7 @@ using SchoolSystem.Data;
 using SchoolSystem.Models;
 using Microsoft.EntityFrameworkCore;
 using SchoolSystem.Service;
+using SchoolSystem.ConsoleUI;
 
 namespace SchoolSystem
 {
@@ -9,26 +10,7 @@ namespace SchoolSystem
     {
         static void Main(string[] args)
         {
-            using (var context = new SchoolSystemContext())
-            {
-                // creates db if it's not there (after migrating)
-                // context.Database.EnsureCreated(); 
-
-                var menu = new MainMenu(
-                    new StudentService(context),
-                    new ClassroomService(context),
-                    new TeacherService(context),
-                    new CourseService(context),
-                    new ScheduleService(),
-                    new EnrollmentService(),
-                    new GradeService(),
-                    new MenuService(context),
-                    new ReportService(context));
-
-                menu.UseMainMenu();
-
-            }
-
+            LogInMenu.LogIn();
         }
     }
 }

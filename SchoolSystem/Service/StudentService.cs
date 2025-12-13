@@ -15,15 +15,16 @@ namespace SchoolSystem.Service
             _context = context;
         }
 
-        public Student? CreateStudent(Student student)
+        public void CreateStudent(Student student)
         {
             if (!ValidateEntity.ValidateDuplicateStudent(_context, student))
             {
-                return null;
+                return;
             }
             _context.Students.Add(student);
             _context.SaveChanges();
-            return student;
+            Console.WriteLine($"Successfully created student with ID: {student.StudentId}");
+            return;
         }
         public List<Student> GetAllStudents()
         {
@@ -33,35 +34,46 @@ namespace SchoolSystem.Service
         {
             return _context.Students.Find(id);
         }
-        public Student? UpdateStudent(int id, Student updatedStudent)
+        public void UpdateStudent(int id, Student updatedStudent)
         {
             var student = _context.Students.Find(id);
 
             if (student == null)
-                return null;
+            {
+                Console.WriteLine("A student with this student ID doesn't exist. Returning to the CRUD menu");
+                return;
+            }
 
             student.FirstName = updatedStudent.FirstName;
             student.LastName = updatedStudent.LastName;
-            student.Email = updatedStudent.Email;
-            student.PersonalNumber = updatedStudent.PersonalNumber;
             _context.SaveChanges();
-            return student;
+            Console.WriteLine($"Successfully updated student with ID: {id}");
+            return;
         }
-        public bool DeleteStudent(int id)
+        public void DeleteStudent()
         {
+            Console.WriteLine("Enter the ID of the student you want to delete: ");
+            
+            // Check user input
+            if (!int.TryParse(Console.ReadLine(), out int id))
+            {
+                Console.WriteLine("Invalid input, Returning to the CRUD menu");
+                return;
+            }
             var student = _context.Students.Find(id);
 
             if (student == null)
-                return false;
-
+            {
+                Console.WriteLine("A student with this student ID doesn't exist. Returning to the CRUD menu");
+                return;
+            }
+                
             _context.Students.Remove(student);
             _context.SaveChanges();
-            return true;
+            Console.WriteLine($"Successfully deleted student with ID: {student.StudentId}");
+            return;
         }
-
-
     }
-
 }
 
 

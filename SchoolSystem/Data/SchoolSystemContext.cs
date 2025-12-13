@@ -47,9 +47,5 @@ namespace SchoolSystem.Data
                 entity.ToView("View_StudentGradeDetails");
             });
         }
-
-
     }
-
-
 }
