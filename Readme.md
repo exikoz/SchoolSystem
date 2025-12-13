@@ -1,7 +1,5 @@
 # Schoolsystem
 
-## Get up and running
-
 ## Get started
 in Docs/How To Run
 You can find information about how to get the program set up and how the program is run and navigated.
