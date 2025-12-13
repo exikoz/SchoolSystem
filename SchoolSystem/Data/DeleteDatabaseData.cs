@@ -8,7 +8,9 @@ namespace SchoolSystem.Data
 {
     public class DeleteDatabaseData()
     {
-        public static void DeleteAllData(SchoolSystemContext context)
+        private static SchoolSystemContext context => DatabaseProvider.Context;
+
+        public static void DeleteAllData()
         {
             Console.WriteLine("Deleting all data...");
 
@@ -24,7 +26,5 @@ namespace SchoolSystem.Data
 
             Console.WriteLine("All data deleted successfully.");
         }
-
      }
-
 }

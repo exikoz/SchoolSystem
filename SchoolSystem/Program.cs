@@ -16,10 +16,7 @@ namespace SchoolSystem
                 // context.Database.EnsureCreated(); 
                 Console.WriteLine("Context skapad och namespaces fungerar!");
 
-                //This command seeds data into the database. Should be commented unless you do it the first time.
-                DataSeeder.Seed(context);
-
-                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(context), new EnrollmentService(context), new GradeService(context), new MenuService(context));
+                var menu = new MainMenu(new StudentService(context), new ClassroomService(context), new TeacherService(context), new CourseService(context), new ScheduleService(), new EnrollmentService(), new GradeService(), new MenuService(context));
                 menu.UseMainMenu();
 
             }

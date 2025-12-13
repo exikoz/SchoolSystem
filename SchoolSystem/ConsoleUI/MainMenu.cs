@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using SchoolSystem.Data;
 
 namespace SchoolSystem
 {
@@ -58,11 +59,12 @@ namespace SchoolSystem
             List<string> menuOptions = new List<string>
             {
                 "CRUD-operations",
-                "Assign course schedule", //Maybe Delete
-                "Register student into a course", //Maybe Delete
+                "Overview of a student's courses, grades, and teacher assessments",
                 "Student overview",
-                "List active courses and participating students",
-                "Student ratio between passed and failed"
+                "List of active courses and participating students",
+                "Student ratio between passed and failed",
+                "Seed the database",
+                "Delete data from database"
             };
 
             // Crud menu options 
@@ -293,25 +295,39 @@ namespace SchoolSystem
 
                         }
                         break;
-                    // Assign course schedule
+                    // Overview of a student's courses, grades, and teacher assessments
                     case 2:
                         MenuService.ShowStudentGradeOverview();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    // Student ratio between passed and failed 
-                    case 3:
-                        MenuService.PrintReport();
-                        break;
                     // Student overview
-                    case 4:
+                    case 3:
                         MenuService.ShowStudentOverview();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;
-                    // List active course and participating students
-                    case 5:
+                    // List of active courses and participating students
+                    case 4:
                         MenuService.ShowActiveCoursesWithStudents();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    // Student ratio between passed and failed
+                    case 5:
+                        MenuService.PrintReport();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    //Seeds data into the database.
+                    case 6:
+                        DataSeeder.Seed();
+                        Console.WriteLine("Press Enter to continue\n>");
+                        Console.ReadLine();
+                        break;
+                    //Deletes data from the database. After this is done the user needs to reseed the database in SSMS.
+                    case 7:
+                        DeleteDatabaseData.DeleteAllData();
                         Console.WriteLine("Press Enter to continue\n>");
                         Console.ReadLine();
                         break;

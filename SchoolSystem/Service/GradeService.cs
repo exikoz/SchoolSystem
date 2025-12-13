@@ -24,12 +24,7 @@ namespace SchoolSystem.Service
     {
         public bool createBool = false;
         public bool deleteBool = false;
-        public readonly SchoolSystemContext _context;
-
-        public GradeService(SchoolSystemContext context)
-        {
-            _context = context;
-        }
+        private static SchoolSystemContext _context => DatabaseProvider.Context;
 
         public void CreateGrade()
         {

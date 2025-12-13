@@ -3,14 +3,19 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using Microsoft.EntityFrameworkCore;
+using SchoolSystem.Data;
 using SchoolSystem.Models;
 
 namespace SchoolSystem.Data
 {
+
+
     public static class DataSeeder
     {
-        public static bool Seed(SchoolSystemContext context)
+        private static SchoolSystemContext context => DatabaseProvider.Context;
+
+        public static bool Seed()
         {
 
             // Check if the database already contains data
@@ -185,6 +190,7 @@ namespace SchoolSystem.Data
                     }
                 );
                 context.SaveChanges();
+                Console.WriteLine("Database seeded successfully.");
                 return true;
             }
         }
@@ -196,13 +202,15 @@ namespace SchoolSystem.Data
             // context.Database.EnsureCreated();
 
             // Ensure that all primary keys are on zero
-            var entities = PrimaryKeyChecker.GetEntitiesWithZeroPrimaryKeys(context);
+            var entities = PrimaryKeyChecker.GetEntitiesWithNonNullIdentity(context);
 
             if (entities.Any())
             {
-                Console.WriteLine("One or more primary key are above 0. Table content needs to be deleted and reseeded in SSMS in order to run the program");
-                Console.WriteLine("\nPress Enter to continue\n>");
-                Console.ReadKey();
+                //foreach (var entity in entities)
+                //{
+                //    Console.WriteLine($"{entity}");
+                //}
+                Console.WriteLine("One or more primary key are above 0. Table content needs to be deleted and reseeded in SSMS in order to seed the database");
                 return false;
             }
 
@@ -213,8 +221,6 @@ namespace SchoolSystem.Data
                 foreach (var table in populatedTable)
                 {
                     Console.WriteLine($"{table}");
-                    Console.WriteLine("\nPress Enter to continue\n>");
-                    Console.ReadKey();
                     return false;
                 }
             }
@@ -252,32 +258,31 @@ namespace SchoolSystem.Data
 
         public static class PrimaryKeyChecker
         {
-            public static List<string> GetEntitiesWithZeroPrimaryKeys(SchoolSystemContext context)
+            public static List<string> GetEntitiesWithNonNullIdentity(SchoolSystemContext context)
             {
                 var result = new List<string>();
 
-                if (context.Students.Any(s => s.StudentId != 0))
-                    result.Add("Students");
-
-                if (context.Teachers.Any(t => t.TeacherId != 0))
-                    result.Add("Teachers");
-
-                if (context.Courses.Any(c => c.CourseId != 0))
-                    result.Add("Courses");
-
-                if (context.Classrooms.Any(c => c.ClassroomId != 0))
-                    result.Add("Classrooms");
-
-                if (context.Schedules.Any(s => s.ScheduleId != 0))
-                    result.Add("Schedules");
-
-                if (context.Enrollments.Any(e => e.EnrollmentId != 0))
-                    result.Add("Enrollments");
-
-                if (context.Grades.Any(g => g.GradeId != 0))
-                    result.Add("Grades");
+                if (HasNonNullIdentity("Students", context)) result.Add("Students");
+                if (HasNonNullIdentity("Teachers", context)) result.Add("Teachers");
+                if (HasNonNullIdentity("Courses", context)) result.Add("Courses");
+                if (HasNonNullIdentity("Classrooms", context)) result.Add("Classrooms");
+                if (HasNonNullIdentity("Schedules", context)) result.Add("Schedules");
+                if (HasNonNullIdentity("Enrollments", context)) result.Add("Enrollments");
+                if (HasNonNullIdentity("Grades", context)) result.Add("Grades");
 
                 return result;
+            }
+
+            private static bool HasNonNullIdentity(string tableName, SchoolSystemContext context)
+            {
+                var sql = $"SELECT IDENT_CURRENT('[dbo].[{tableName}]')";
+                decimal? identityValue = context.Database
+                    .SqlQueryRaw<decimal?>($"{sql}")
+                    .AsEnumerable()
+                    .FirstOrDefault();
+
+                // If identityValue is not NULL/zero then the associated table has had inserts before
+                return identityValue != null && identityValue != 0;
             }
         }
     }
