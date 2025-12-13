@@ -56,9 +56,9 @@ namespace SchoolSystem.Service
         }
         public void PrintReport()
         {
-            Console.Write("Enter start date: ");
+            Console.Write("Enter start date (yyyy-MM-dd): ");
             var start = DateTime.Parse(Console.ReadLine());
-            Console.Write("Enter end date: ");
+            Console.Write("Enter end date (yyyy-MM-dd): ");
             var end = DateTime.Parse(Console.ReadLine());
             Console.WriteLine();
             var grades = _context.Grades
@@ -77,7 +77,6 @@ namespace SchoolSystem.Service
                 if (g.GradeValue == "F")
                 {
                     notPassed++;
-                   
                 }
                 else
                 {
@@ -90,39 +89,66 @@ namespace SchoolSystem.Service
             }
             Console.WriteLine();
             Console.WriteLine($"Passed: {passed} - Not passed: {notPassed}");
-            Console.ReadKey();
         }
         public void ShowActiveCoursesWithStudents()
         {
-            DateTime today = DateTime.Today;
-
-            var activeCourses = _context.Courses.Where(c => c.StartDate <= today && c.EndDate >= today).Include(c => c.Enrollments).ThenInclude(e => e.Student).ToList();
-
-            if (!activeCourses.Any())
+            Console.Write("Enter start date (yyyy-MM-dd): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime startDate))
             {
-                Console.WriteLine("No active courses at the moment.");
+                Console.WriteLine("Invalid start date format.");
                 return;
             }
 
-            Console.WriteLine("Active courses and participating students:");
+            Console.Write("Enter end date (yyyy-MM-dd): ");
+            if (!DateTime.TryParse(Console.ReadLine(), out DateTime endDate))
+            {
+                Console.WriteLine("Invalid end date format.");
+                return;
+            }
+
+            if (endDate < startDate)
+            {
+                Console.WriteLine("End date cannot be earlier than start date.");
+                return;
+            }
+
+            var activeCourses = _context.Courses
+                .Where(c =>
+                    c.StartDate <= endDate && 
+                    c.EndDate >= startDate      
+                )
+                .Include(c => c.Enrollments)
+                    .ThenInclude(e => e.Student)
+                .ToList();
+
+            if (!activeCourses.Any())
+            {
+                Console.WriteLine("No courses active within this date interval.");
+                return;
+            }
+
+            Console.WriteLine("\nCourses active in the selected interval and participating students:");
 
             foreach (var course in activeCourses)
             {
                 Console.WriteLine($"Course: {course.Name}");
-                Console.WriteLine($"Period: {course.StartDate:dd-MM-yyyy} → {course.EndDate:dd-MM-yyyy}");
+                Console.WriteLine($"Period: {course.StartDate:dd-MM-yyyy} - {course.EndDate:dd-MM-yyyy}");
 
                 var enrolledStudents = course.Enrollments.Select(e => e.Student).ToList();
-                if (enrolledStudents.Any())
+
+                if (!enrolledStudents.Any())
                 {
-                    foreach (var student in enrolledStudents)
-                    {
-                        Console.WriteLine($"{student.FirstName} {student.LastName} ({student.Email})");
-                    }
+                    Console.WriteLine("No students enrolled.");
                 }
                 else
                 {
-                    Console.WriteLine("No students enrolled."); 
+                    foreach (var student in enrolledStudents)
+                    {
+                        Console.WriteLine($"Student ID {student.StudentId} - {student.FirstName} {student.LastName} ({student.Email})");
+                    }
                 }
+
+                Console.WriteLine();
             }
         }
         public void ShowStudentGradeOverview()
