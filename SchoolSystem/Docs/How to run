@@ -1,1 +1,75 @@
+# ✅ How to Run the SchoolSystem Console App
+
+## 🧰 1. Prerequisites
+
+Before running the application, make sure the following setup is complete.
+
+### ✅ Required Software
+- **SQL Server Management Studio (SSMS)**
+- **Visual Studio 2026** (or later)
+
+### ✅ Database Setup
+1. Open **SSMS**  
+2. Connect to the server: **localhost**  
+   - Ensure **Trust Server Certificate** is enabled  
+3. Create a new database named:  
+   **SchoolSystemDB**
+
+### ✅ Application Configuration
+Inside the **SchoolSystem** project:
+
+1. Create a new file named **appsettings.json**
+2. Copy the contents from the existing JSON file
+3. Replace the `DefaultConnection` line with:
+"Server=localhost;Database=SchoolSystemDB;Trusted_Connection=True;MultipleActiveResultSets=True;TrustServerCertificate=True;"  
+
+This connects the console app to your local SQL Server instance.
+
+---
+
+## ▶️ 2. Running the Console App
+
+1. Open the solution in **Visual Studio**
+2. Press **Run**
+3. A terminal window will appear
+4. Use the **arrow keys** to navigate the login menu
+5. In the **main menu**, select **option 6** to seed the database
+
+Once the seeding is complete, you can use the program normally.
+
+### ⚠️ Important Note
+If you choose **menu option 7** (delete all database data):
+
+- The program will still run  
+- **BUT** you will be **locked out of seeding again** until identity values are reset (see section 3)
+
+---
+
+## 🔄 3. Re‑enabling Data Seeding
+
+If you deleted all data and want to seed again:
+
+1. Open **SSMS**
+2. Right‑click the database **SchoolSystemDB**
+3. Select **New Query**
+4. Run the following commands to reset all identity values:
+
+-- Reset identity for Schedules DBCC CHECKIDENT ('Schedules', RESEED, 0);
+
+-- Reset identity for Teachers DBCC CHECKIDENT ('Teachers', RESEED, 0);
+
+-- Reset identity for Students DBCC CHECKIDENT ('Students', RESEED, 0);
+
+-- Reset identity for Classrooms DBCC CHECKIDENT ('Classrooms', RESEED, 0);
+
+-- Reset identity for Courses DBCC CHECKIDENT ('Courses', RESEED, 0);
+
+-- Reset identity for Grades DBCC CHECKIDENT ('Grades', RESEED, 0);
+
+-- Reset identity for Enrollments DBCC CHECKIDENT ('Enrollments', RESEED, 0);
+
+
+After running these commands, return to the console app and seed the data again using **menu option 6**.
+
+---
 
