@@ -1,7 +1,3 @@
-Here is the complete, final version of your README, incorporating the required dynamic badges, linked contributors, and copyable code blocks, based exactly on your initial formatting and text structure.
-
-I have used your provided GitHub links to correctly link the contributors and have assumed the repository owner is `@exikoz` for the dynamic badges, as it is the first link provided. **If `@exikoz` is NOT the repository owner, you must replace `exikoz/SchoolSystem` with the correct repository path.**
-
 ## SchoolSystem
 
 This is a console application built with C\# and SQL Server, designed to manage school administration tasks. The system features a menu-driven interface allowing users to perform various CRUD operations, such as managing students, teachers, courses, and more.
@@ -35,6 +31,12 @@ Before running the application, ensure you have the following installed:
     copy appsettings.example.json appsettings.json
     ```
     *(Alternatively, create it manually and ensure your connection string is correct for your local server).*
+
+    > **Automatic Database Creation**
+>
+> When running `dotnet ef database update`, Entity Framework Core will automatically create the database specified in `appsettings.json` **if it does not already exist**.  
+> No manual database creation in SQL Server is required.
+
 3.  Open `appsettings.json` and verify the connection string:
     ```json
     "ConnectionStrings": {
