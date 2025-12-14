@@ -18,8 +18,8 @@ namespace SchoolSystem.Service
         // SQL View
         public void ShowGradeViewReport()
         {
-            Console.WriteLine("--- RAPPORT FRÅN SQL VIEW ---");
-            Console.Write("Ange Student ID: ");
+            Console.WriteLine("--- REPORT FROM SQL VIEW ---");
+            Console.Write("Enter Student ID: ");
             if (int.TryParse(Console.ReadLine(), out int studentId))
             {
                 var report = _context.StudentGradeViews
@@ -28,7 +28,7 @@ namespace SchoolSystem.Service
 
                 foreach (var row in report)
                 {
-                    Console.WriteLine($"{row.CourseName}: {row.GradeValue} (Satt av: {row.TeacherName})");
+                    Console.WriteLine($"{row.CourseName}: {row.GradeValue} (Set by: {row.TeacherName})");
                 }
             }
         }
@@ -36,8 +36,8 @@ namespace SchoolSystem.Service
         // Stored Procedure
         public void ShowGradeStatisticsProc()
         {
-            Console.WriteLine("--- STATISTIK FRÅN STORED PROCEDURE ---");
-            // Sätt datum hårtkodat för test, eller be om input
+            Console.WriteLine("--- STATISTICS FROM STORED PROCEDURE ---");
+            // Set hardcoded date for test, or ask for input
             var start = DateTime.Now.AddYears(-1);
             var end = DateTime.Now.AddYears(1);
 
@@ -47,7 +47,30 @@ namespace SchoolSystem.Service
 
             foreach (var s in stats)
             {
-                Console.WriteLine($"Betyg {s.GradeValue}: {s.Count} stycken");
+                Console.WriteLine($"Grade {s.GradeValue}: {s.Count} count");
+            }
+        }
+
+        // LINQ GroupBy
+        public void ShowGradeDistributionLinq()
+        {
+            Console.WriteLine("--- STATISTICS FROM LINQ (GROUP BY) ---");
+            var start = DateTime.Now.AddYears(-5); 
+            var end = DateTime.Now.AddYears(1);
+
+            var stats = _context.Grades
+                .Where(g => g.GradeDate >= start && g.GradeDate <= end)
+                .GroupBy(g => g.GradeValue)
+                .Select(g => new
+                {
+                    Grade = g.Key,
+                    Count = g.Count()
+                })
+                .ToList();
+
+            foreach (var s in stats)
+            {
+                Console.WriteLine($"Grade {s.Grade}: {s.Count} count");
             }
         }
     }
