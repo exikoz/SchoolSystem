@@ -12,9 +12,6 @@ namespace SchoolSystem.Models
         [Required]
         [MaxLength(100)]
         public string Name { get; set; } = string.Empty;
-
-        public bool Active { get; set; } = true;
-
         public DateTime StartDate { get; set; }
         public DateTime EndDate { get; set; }
 
