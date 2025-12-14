@@ -1,6 +1,6 @@
 ## SchoolSystem
 
-This is a console application built with C# and SQL Server, designed to manage school administration tasks. The system features a menu-driven interface allowing users to perform various CRUD operations, such as managing students, teachers, courses, and more.
+This is a console application built with C# and SQL Server, designed to manage school administration tasks. The system features a menu-driven interface allowing users to perform various CRUD operations, such as managing students, teachers, courses, and more...
 
 ---
 
