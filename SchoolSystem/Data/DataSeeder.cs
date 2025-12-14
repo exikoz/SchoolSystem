@@ -201,29 +201,29 @@ namespace SchoolSystem.Data
             // Ensure database exists by creating it first
             // context.Database.EnsureCreated();
 
-            // Ensure that all primary keys are on zero
-            var entities = PrimaryKeyChecker.GetEntitiesWithNonNullIdentity(context);
-
-            if (entities.Any())
-            {
-                //foreach (var entity in entities)
-                //{
-                //    Console.WriteLine($"{entity}");
-                //}
-                Console.WriteLine("One or more primary key are above 0. Table content needs to be deleted and reseeded in SSMS in order to seed the database");
-                return false;
-            }
-
-            // Ensure that the database is empty
+            // 1. Ensure that the database is empty
             if (populatedTable.Count > 0)
             {
                 Console.WriteLine("These tables already contain data and prevent the program from completing the seeding process.");
                 foreach (var table in populatedTable)
                 {
                     Console.WriteLine($"{table}");
-                    return false;
+                }
+                return false;
+            }
+
+            // 2. Ensure that all primary keys are on zero (Auto-fix logic)
+            var entities = PrimaryKeyChecker.GetEntitiesWithNonNullIdentity(context);
+
+            if (entities.Any())
+            {
+                // If tables are empty (passed step 1) but have dirty identities (step 2), reset them.
+                foreach (var entity in entities)
+                {
+                    context.Database.ExecuteSqlRaw($"DBCC CHECKIDENT ('{entity}', RESEED, 0)");
                 }
             }
+
             return true;
         }
 

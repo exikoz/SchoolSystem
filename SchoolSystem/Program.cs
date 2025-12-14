@@ -10,6 +10,7 @@ namespace SchoolSystem
     {
         static void Main(string[] args)
         {
+            DatabaseInitializer.WarmUp();
             LogInMenu.LogIn();
         }
     }
